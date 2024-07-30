@@ -4,7 +4,7 @@ import { withAuth } from 'next-auth/middleware';
 export default withAuth(
   async function middleware(req) {
 
-    const protectedRoutes = ['/', '/profile/:path*'];
+    const protectedRoutes = ['/', '/profile/:path*', '/posts/:path*'];
 
     const publicRoutes = ['/sign-in', '/sign-up'];
 
@@ -23,5 +23,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/', '/sign-in', '/sign-up', '/profile/:path*'],
+  matcher: ['/', '/profile/:path*', '/posts/:path*'],
 };

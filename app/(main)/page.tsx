@@ -1,10 +1,18 @@
 import { getCurrentUser } from "@/lib/authAction";
+import PostEditor from "./components/PostEditor";
+import TrendsSideBar from "./components/TrendsSideBar";
+import PostFeeds from "./components/PostFeeds";
 
 export default async function Home () {
+  const currentUser = await getCurrentUser();
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <p>Hello Home Page!!!</p>
+    <main className="w-full min-w-0 flex gap-4 ">
+      <div className="w-full min-w-0 space-y-4">
+        <PostEditor currentUser={currentUser}/>
+        <PostFeeds/>
+      </div>
+      <TrendsSideBar/>
     </main>
   );
 }
