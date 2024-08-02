@@ -18,7 +18,9 @@ export const GET = async (request: NextRequest) => {
       return Response.json({error: 'Unathourized'}, {status: 401})
     }
 
-    const posts = await Post.find()
+    const currentUserFollowings = currentUser.following;
+
+    const posts = await Post.find({author: {$in: currentUserFollowings}})
     .populate('author', '_id username displayName image followers following')
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)

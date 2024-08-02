@@ -4,6 +4,7 @@ import { getCurrentUserRawData } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { createPostSchema } from "@/lib/validation";
 import Post from "@/models/posts";
+import User from "@/models/users";
 import { postProps } from "@/types/types";
 
 export const createNewPost = async (input: string) => {
@@ -15,32 +16,59 @@ export const createNewPost = async (input: string) => {
 
   const { content } = createPostSchema.parse({content: input});
 
-  const postData = {content: content, author: currentUser.id};
+  const postData = {content: content, author: currentUser._id};
 
   try {
     const post = await Post.create(postData);
     post.save();
 
-    return {success: 'Post successfully created'} 
+    await User.findOneAndUpdate({_id: currentUser._id}, {$push: {posts: post._id}})
+
+    const newPostValue =  await Post.findOne({_id: post._id})
+    .populate('author', '_id username displayName image followers following');
+
+    const newPost = JSON.parse(JSON.stringify(newPostValue));
+
+    return newPost;
   } catch (error) {
     return {error: 'Internal server error, try again later'} 
   }
 };
 
-export const getAllPosts = async () => {
+export const getSinglePost = async (id: string) => {
+  await connectToMongoDB();
+
+  const currentUser = await getCurrentUserRawData();
+  if (!currentUser) throw Error('Unathourized');
+
+  const post = await Post.findOne({_id: id})
+  .populate('author', '_id username displayName image followers following')
+
+  if (!post) throw Error('Post not found')
+
+  const postReturned = JSON.parse(JSON.stringify(post));
+
+  return postReturned;
+}
+
+export const deletePost = async (id: string) => {
   await connectToMongoDB();
 
   const currentUser = await getCurrentUserRawData();
 
   if (!currentUser) throw Error('Unathourized');
 
-  const postsArray = await Post.find()
-  .populate('author', '_id username displayName image')
-  .sort({createdAt: 'descending'});
+  const post = await Post.findOne({_id: id});
 
-  const posts = JSON.parse(JSON.stringify(postsArray))
+  if (!post) throw Error('Post not found');
 
-  return posts;
+  if (JSON.stringify(post.author) !== JSON.stringify(currentUser._id)) throw Error('Unathourized');
+
+  await Post.deleteOne({_id: id})
+
+  await User.findOneAndUpdate({_id: currentUser._id}, {$pull: {posts: post._id}})
+
+  return {success: 'Post successfully deleted'};
 };
 
 export const getTrendingTopics = async () => {
@@ -74,7 +102,5 @@ export const getTrendingTopics = async () => {
   }
 
   const hashtagCounts = countHashtags(posts).splice(0, 5);
-  console.log(hashtagCounts);
-  
   return hashtagCounts;
 };

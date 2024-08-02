@@ -23,8 +23,8 @@ const UserButton = ({className, currentUser}: Props) => {
   const queryClient = useQueryClient()
 
   const logOut = () => {
-    queryClient.clear();
     signOut();
+    queryClient.clear();
   }
 
   return (
@@ -39,7 +39,7 @@ const UserButton = ({className, currentUser}: Props) => {
           <p className='lg:text-lg text-base'>@{currentUser.username}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator/>
-        <Link href={`/profile/${currentUser.username}`}>
+        <Link href={`/users/${currentUser.username}`}>
           <DropdownMenuItem>
             <HiOutlineUser size={20} className='mr-2'/>
             <p className='text-base'>Profile</p>
@@ -71,10 +71,10 @@ const UserButton = ({className, currentUser}: Props) => {
           </DropdownMenuPortal>
         </DropdownMenuSub>
         <DropdownMenuSeparator/>
-          <DropdownMenuItem onClick={logOut}>
-            <HiOutlinePower size={20} className='mr-2'/>
-            <p className='text-base'>Log Out</p>
-          </DropdownMenuItem>
+        <DropdownMenuItem onClick={logOut}>
+          <HiOutlinePower size={20} className='mr-2'/>
+          <p className='text-base'>Log Out</p>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

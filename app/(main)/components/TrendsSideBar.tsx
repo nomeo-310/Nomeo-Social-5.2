@@ -1,14 +1,19 @@
 import React from 'react'
 import { getSuggestedFollowers } from '../actions/userActions'
 import { Loader2 } from 'lucide-react';
-import { suggestedUserProps } from '@/types/types';
+import { suggestedUserProps, userProps } from '@/types/types';
 import Link from 'next/link';
 import ImageAvatar from './ImageAvatar';
-import { Button } from '@/components/ui/button';
 import { getTrendingTopics } from '../actions/postActions';
 import { formatNumber } from '@/lib/utils';
+import FollowButton from './FollowButton';
 
-const TrendsSideBar = () => {
+type trendsSideBarProps = {
+  currentUser: userProps
+}
+
+
+const TrendsSideBar = ({currentUser}:trendsSideBarProps) => {
 
   const SuggestFollowerList = async () => {
 
@@ -19,14 +24,14 @@ const TrendsSideBar = () => {
         <div className="font-bold text-2xl">Who to follow</div>
         {suggestedFollowers.map((suggestion: suggestedUserProps) => (
           <div key={suggestion._id} className='flex items-center justify-between gap-3'>
-            <Link href={`/profile/${suggestion.username}`} className='flex items-center gap-3'>
+            <Link href={`/users/${suggestion.username}`} className='flex items-center gap-3'>
               <ImageAvatar imgSrc={suggestion.image} className='flex-none border'/>
               <div className='text-base'>
                 <p className='line-clamp-1 break-all font-semibold hover:underline'>{suggestion.displayName}</p>
                 <p className='line-clamp-1 break-all text-muted-foreground'>@{suggestion.username}</p>
               </div>
             </Link>
-            <Button className='rounded-full'>Follow</Button>
+            <FollowButton userId={suggestion._id} initialState={{followers: suggestion.followers.length, isFollowedBy: suggestion.followers.includes(currentUser._id)}} />
           </div>
         ))}
       </div>

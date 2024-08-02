@@ -18,10 +18,10 @@ type postFeedProps = {
 }
 
 
-const PostFeeds = ({currentUser}:postFeedProps) => {
+const FollowingFeeds = ({currentUser}:postFeedProps) => {
 
   const fetchApiData = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/getFeeds?page=${pageParam}`);
+    const response = await fetch(`/api/getFollowingFeeds?page=${pageParam}`);
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');
@@ -32,7 +32,7 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
   };
 
   const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status} = useInfiniteQuery({
-    queryKey: ['post-feed', 'all-posts'],
+    queryKey: ['post-feed', 'following-posts'],
     queryFn: fetchApiData,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage
@@ -47,7 +47,7 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
   if (status === 'success' && !posts.length && !hasNextPage) {
     return  (
       <p className='text-base lg:text-lg text-center text-muted-foreground'>
-        No one has posted anything yet
+        No posts found. Start following people to see their posts here.
       </p>
     )
   }
@@ -69,6 +69,6 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
       { isFetchingNextPage && <Loader2 className='mx-auto animate-spin my-3'/> }
     </InfiniteScrollContainer>
   )
-}
+};
 
-export default PostFeeds
+export default FollowingFeeds

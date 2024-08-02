@@ -19,21 +19,18 @@ export const authOptions: AuthOptions = {
       async authorize(credentials) {
         
         const {username, password} = signInSchema.parse(credentials);
-        console.log(username, password);
 
         if (!username || !password) {
           throw new Error('Invalid Credentials');
         }
 
         const user = await getUserByUsername(username);
-        console.log(user);
 
         if (!user || !user?.hashedPassword) {
           throw new Error('Invalid Credentials')
         }
 
         const isCorrectPassword = await bcrypt.compare(password, user.hashedPassword);
-        console.log(isCorrectPassword);
         
         if (!isCorrectPassword) {
           throw new Error('Wrong Password')

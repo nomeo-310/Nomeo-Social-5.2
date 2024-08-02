@@ -18,10 +18,10 @@ type postFeedProps = {
 }
 
 
-const PostFeeds = ({currentUser}:postFeedProps) => {
+const UserFeeds = ({currentUser}:postFeedProps) => {
 
   const fetchApiData = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/getFeeds?page=${pageParam}`);
+    const response = await fetch(`/api/getUserPosts/${currentUser._id}?page=${pageParam}`);
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');
@@ -32,7 +32,7 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
   };
 
   const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status} = useInfiniteQuery({
-    queryKey: ['post-feed', 'all-posts'],
+    queryKey: ['post-feed', 'user-posts', currentUser._id],
     queryFn: fetchApiData,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage
@@ -47,7 +47,7 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
   if (status === 'success' && !posts.length && !hasNextPage) {
     return  (
       <p className='text-base lg:text-lg text-center text-muted-foreground'>
-        No one has posted anything yet
+        This user has&apos;t posted anything yet
       </p>
     )
   }
@@ -71,4 +71,4 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
   )
 }
 
-export default PostFeeds
+export default UserFeeds

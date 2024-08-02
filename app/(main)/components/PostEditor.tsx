@@ -4,18 +4,20 @@ import React from 'react'
 import { EditorContent, useEditor } from '@tiptap/react'
 import starterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
-import { createNewPost } from '../actions/postActions'
 import { userProps } from '@/types/types'
 import ImageAvatar from './ImageAvatar'
-import { Button } from '@/components/ui/button'
 import '../extraStyles/styles.css';
 import { toast } from 'sonner'
+import { useSubmitPostMutation } from '../hooks/submitPostMutation'
+import LoadingButton from '@/components/common/LoadingButton'
 
 type postEditorProps = {
   currentUser: userProps
 }
 
 const PostEditor = ({currentUser} :postEditorProps) => {
+  const mutation = useSubmitPostMutation();
+
   const editor = useEditor({
     extensions: [
       starterKit.configure({
@@ -32,19 +34,12 @@ const PostEditor = ({currentUser} :postEditorProps) => {
     blockSeparator: '\n'
   }) || '';
 
-  const onSubmitPost = async () => {
-    await createNewPost(input)
-    .then((response) => {
-
-      if (response.success) {
-        toast.success(response.success)
-      };
-
-      if (response.error) {
-        toast.error(response.error)
-      };
-    })
-    editor?.commands.clearContent()
+  const onSubmitPost = () => {
+    mutation.mutate(input, {
+      onSuccess: () => {
+        editor?.commands.clearContent();
+      }
+    });
   };
 
   return (
@@ -54,9 +49,9 @@ const PostEditor = ({currentUser} :postEditorProps) => {
         <EditorContent editor={editor} className='w-full max-h-[20rem] overflow-y-auto bg-background rounded-md px-4 py-3'/>
       </div>
       <div className="flex justify-end">
-        <Button onClick={onSubmitPost} disabled={!input.trim()} className='rounded-full min-w-28'>
-          <p className='text-base'>Create post</p>
-        </Button>
+        <LoadingButton onClick={onSubmitPost} disabled={!input.trim()} className='rounded-full min-w-28' loading={mutation.isPending}>
+          <p className='text-base'>{mutation.isPending ? 'Creating post...' : 'Create post'}</p>
+        </LoadingButton>
       </div>
     </div>
   )

@@ -3,11 +3,12 @@ import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import Post from "@/models/posts";
 import { NextRequest } from "next/server";
 
-export const GET = async (request: NextRequest) => {
+export const GET = async (request: NextRequest, { params: {userId}}: {params: {userId: string}}) => {
   await connectToMongoDB();
 
   try {
     const value = request.nextUrl.searchParams.get('page') || undefined;
+
     const page = parseInt(value as string);
     const pageSize = 10;
     
@@ -18,7 +19,7 @@ export const GET = async (request: NextRequest) => {
       return Response.json({error: 'Unathourized'}, {status: 401})
     }
 
-    const posts = await Post.find()
+    const posts = await Post.find({author: userId})
     .populate('author', '_id username displayName image followers following')
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)

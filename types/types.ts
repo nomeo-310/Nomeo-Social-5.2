@@ -1,3 +1,4 @@
+
 type imageProps = {
   public_id: string, 
   secure_url: string
@@ -17,6 +18,14 @@ export type userProps = {
   website: string
   occupation: string
   profileImage: imageProps
+  country: string,
+  posts: string[],
+  followers: string[],
+  following: string[],
+  likes: string[],
+  comments: string[],
+  notifications: string[],
+  bookmarks : string[],
   createdAt: string
   updatedAt: string
 };
@@ -29,6 +38,8 @@ export type postProps = {
     displayName: string
     image: string
     _id: string
+    followers: string[]
+    following: string[]
   }
   images: string[],
   likes: string[],
@@ -44,8 +55,14 @@ export type postProps = {
 }
 
 export type suggestedUserProps = {
+  followers: string[]
   username: string
   displayName: string
   image: string
   _id: string
-}
+};
+
+export type followUserInfoProps = {
+  followers: number
+  isFollowedBy: boolean
+};

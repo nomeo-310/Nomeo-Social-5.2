@@ -16,6 +16,7 @@ export const getSuggestedFollowers = async () => {
   const followings = currentUser.following;
 
   const suggestions = await User.find({_id: {$nin: followings}, name: {$ne: currentUser.name}})
+  .select('_id username displayName image followers')
   .limit(5);
 
   const suggestedFollowers = JSON.parse(JSON.stringify(suggestions))

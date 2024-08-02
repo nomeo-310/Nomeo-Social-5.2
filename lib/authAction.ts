@@ -51,8 +51,6 @@ export const getUserByUsername = async (username:string) => {
 
   const currentUserRawValue = await User.findOne({username: username});
 
-  console.log(currentUserRawValue)
-
   if (!currentUserRawValue) {
     return;
   }
