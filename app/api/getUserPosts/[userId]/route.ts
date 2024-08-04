@@ -20,7 +20,7 @@ export const GET = async (request: NextRequest, { params: {userId}}: {params: {u
     }
 
     const posts = await Post.find({author: userId})
-    .populate('author', '_id username displayName image followers following')
+    .populate('author', '_id username displayName image followers following city state')
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);

@@ -21,7 +21,7 @@ export const GET = async (request: NextRequest) => {
     const currentUserFollowings = currentUser.following;
 
     const posts = await Post.find({author: {$in: currentUserFollowings}})
-    .populate('author', '_id username displayName image followers following')
+    .populate('author', '_id username displayName image followers following city state')
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);

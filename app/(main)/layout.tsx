@@ -7,6 +7,9 @@ import { ThemeProvider } from 'next-themes'
 import MenuBar from "./components/MenuBar";
 import ToastProvider from "@/providers/ToastProvider";
 import ReactQueryProvider from "@/providers/ReactQueryProvider";
+import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
+import { extractRouterConfig } from "uploadthing/server";
+import { fileRouter } from "../api/uploadthing/core";
 
 export const metadata: Metadata = {
   title: {template: "%s | Nomeo Social", default: "Home Page | Nomeo Social"},
@@ -29,6 +32,7 @@ export default async function RootLayout({children,}: Readonly<{children: React.
   return (
     <html lang="en">
       <body className={`${urbanist.variable} ${barlow.variable}`}>
+        <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)}/>
         <ReactQueryProvider>
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange >
             <ToastProvider/>

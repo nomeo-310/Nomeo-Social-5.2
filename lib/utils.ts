@@ -4,7 +4,7 @@ import { formatDate, formatDistanceToNowStrict } from 'date-fns'
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
-}
+};
 
 export const formatPostDate = (date:string) => {
   const fromTime = new Date(date);
@@ -19,11 +19,14 @@ export const formatPostDate = (date:string) => {
       return formatDate(fromTime, 'MMM d, yyyy');
     }
   }
-}
+};
 
 export const formatNumber = (value: number) => {
   return Intl.NumberFormat('en-US', {
     notation: "compact",
     maximumFractionDigits: 1
   }).format(value);
-}
+};
+
+
+

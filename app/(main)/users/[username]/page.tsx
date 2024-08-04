@@ -11,6 +11,7 @@ import FollowerCount from '../../components/FollowerCount';
 import { Button } from '@/components/ui/button';
 import FollowButton from '../../components/FollowButton';
 import UserFeeds from '../../components/UserFeeds';
+import EditUserProfileButton from '../components/EditUserProfileButton';
 
 type profilePageProps = {
   params: {username: string}
@@ -80,7 +81,7 @@ const page = async ({params: {username}}: profilePageProps) => {
             </div>
           </div>
           {user._id === loggedInUser._id ? 
-            (<Button className='rounded-full'><p className='text-base'>Edit profile</p></Button>) : 
+            <EditUserProfileButton user={loggedInUser}/> : 
             <FollowButton userId={user._id} initialState={followerInfo}/>
           }
         </div>

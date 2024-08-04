@@ -24,3 +24,15 @@ export type signInValues = z.infer<typeof signInSchema>
 export const createPostSchema = z.object({
   content: requiredString,
 });
+
+export const updateProfileSchema = z.object({
+  city: requiredString,
+  displayName: requiredString,
+  country: requiredString,
+  state: requiredString,
+  bio: z.string().max(1000, "Mut be at most 1000 characters").optional(), 
+  website: z.string().optional(),
+  occupation: z.string().optional(),
+});
+
+export type updateProfileValues = z.infer<typeof updateProfileSchema>

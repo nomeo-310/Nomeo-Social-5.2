@@ -7,6 +7,7 @@ import ImageAvatar from './ImageAvatar'
 import { formatPostDate } from '@/lib/utils'
 import AnimationWrapper from '@/components/common/AnimationWrapper'
 import PostMenu from './PostMenu'
+import Linkify from './Linkify'
 
 type postCardProps = {
   post: postProps
@@ -28,13 +29,15 @@ const PostCard = ({post, index, currentUser}: postCardProps) => {
               {post.author.displayName}
             </Link>
             <Link href={`/posts/${post._id}`} className='block text-sm text-muted-foreground hover: underline'>
-              {formatPostDate(post.createdAt)}
+              {formatPostDate(post.createdAt)} {" . "} {post.author.city && post.author.state && <span>{post.author.city}, {post.author.state}.</span>}
             </Link>
             </div>
           </div>
           <PostMenu currentUser={currentUser} post={post} className='rounded-full'/>
         </div>
-        <div className='whitespace-pre-line break-words'>{post.content}</div>
+        <Linkify>
+          <div className='whitespace-pre-line break-words'>{post.content}</div>
+        </Linkify>
       </article>
     </AnimationWrapper>
   )

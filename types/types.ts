@@ -38,6 +38,8 @@ export type postProps = {
     displayName: string
     image: string
     _id: string
+    city: string
+    state: string
     followers: string[]
     following: string[]
   }
