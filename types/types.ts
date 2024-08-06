@@ -38,12 +38,20 @@ export type postProps = {
     displayName: string
     image: string
     _id: string
+    bio: string
     city: string
     state: string
+    country: string
+    occupation: string
     followers: string[]
     following: string[]
   }
-  images: string[],
+  attachments: [
+    { _id: string
+      url: string
+      type: string
+    }
+  ],
   likes: string[],
   bookmarks: string[],
   hideNotification: boolean,

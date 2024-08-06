@@ -8,19 +8,18 @@ import ImageAvatar from '../../components/ImageAvatar';
 import { formatDate } from 'date-fns';
 import { formatNumber } from '@/lib/utils';
 import FollowerCount from '../../components/FollowerCount';
-import { Button } from '@/components/ui/button';
 import FollowButton from '../../components/FollowButton';
 import UserFeeds from '../../components/UserFeeds';
 import EditUserProfileButton from '../components/EditUserProfileButton';
 
 type profilePageProps = {
   params: {username: string}
-}
+};
 
 type userProfileProps = {
   user: userProps
   loggedInUser: userProps
-}
+};
 
 const getUser = React.cache(async (username: string) => {
   const user = await getUserByUsername(username);
@@ -40,7 +39,7 @@ export const generateMetadata = async ({params: {username}}: profilePageProps):P
   return {
     title: `${user.displayName}`
   };
-}
+};
 
 const page = async ({params: {username}}: profilePageProps) => {
   const loggedInUser = await getCurrentUser();
@@ -109,6 +108,6 @@ const page = async ({params: {username}}: profilePageProps) => {
       <TrendsSideBar currentUser={loggedInUser}/>
     </main>
   )
-}
+};
 
 export default page

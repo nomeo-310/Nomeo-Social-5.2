@@ -3,26 +3,32 @@
 import { getCurrentUserRawData } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { createPostSchema } from "@/lib/validation";
+import Media from "@/models/media";
 import Post from "@/models/posts";
 import User from "@/models/users";
 import { postProps } from "@/types/types";
 
-export const createNewPost = async (input: string) => {
+export const createNewPost = async (input: {
+  content: string,
+  attachmentIds: string[]
+}) => {
   await connectToMongoDB();
 
   const currentUser = await getCurrentUserRawData();
 
   if (!currentUser) throw Error('Unathourized');
 
-  const { content } = createPostSchema.parse({content: input});
+  const { content, attachmentIds } = createPostSchema.parse(input);
 
-  const postData = {content: content, author: currentUser._id};
+  const postData = {content: content, author: currentUser._id, attachments: attachmentIds};
 
   try {
     const post = await Post.create(postData);
     post.save();
 
     await User.findOneAndUpdate({_id: currentUser._id}, {$push: {posts: post._id}})
+
+    await Media.updateMany({_id: {$in: attachmentIds}}, {post: post._id, author: currentUser._id})
 
     const newPostValue =  await Post.findOne({_id: post._id})
     .populate('author', '_id username displayName image followers following');
@@ -42,14 +48,15 @@ export const getSinglePost = async (id: string) => {
   if (!currentUser) throw Error('Unathourized');
 
   const post = await Post.findOne({_id: id})
-  .populate('author', '_id username displayName image followers following')
+  .populate('author', '_id username displayName image followers following bio city state country occupation')
+  .populate('attachments', '_id url type')
 
   if (!post) throw Error('Post not found')
 
   const postReturned = JSON.parse(JSON.stringify(post));
 
   return postReturned;
-}
+};
 
 export const deletePost = async (id: string) => {
   await connectToMongoDB();
@@ -63,6 +70,8 @@ export const deletePost = async (id: string) => {
   if (!post) throw Error('Post not found');
 
   if (JSON.stringify(post.author) !== JSON.stringify(currentUser._id)) throw Error('Unathourized');
+
+  await Media.updateMany({_id: {$in: post.attachments}}, { $unset: { post: "", author: "" }})
 
   await Post.deleteOne({_id: id})
 

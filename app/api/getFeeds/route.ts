@@ -20,6 +20,7 @@ export const GET = async (request: NextRequest) => {
 
     const posts = await Post.find()
     .populate('author', '_id username displayName image followers following city state')
+    .populate('attachments', '_id url type')
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);

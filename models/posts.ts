@@ -4,7 +4,7 @@ import {  Schema } from 'mongoose';
 
 const PostSchema:Schema = new Schema({
   content: { type: String, default: '' },
-  images: [{ type: Schema.ObjectId, ref: 'Media'}],
+  attachments: [{ type: Schema.ObjectId, ref: 'Media'}],
   author: { type: Schema.ObjectId, ref: 'User'},
   likes: [{ type: Schema.ObjectId, ref: 'User'}],
   bookmarks: [{ type: Schema.ObjectId, ref: 'User'}],
