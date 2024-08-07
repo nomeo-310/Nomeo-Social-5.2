@@ -5,7 +5,7 @@ import React from 'react'
 import { postProps, userProps } from '@/types/types'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
-import { HiEllipsisHorizontal, HiNoSymbol, HiOutlineBell, HiOutlineBellAlert, HiOutlineBellSlash, HiOutlineExclamationTriangle, HiOutlineTrash, HiSignal, HiSignalSlash} from 'react-icons/hi2'
+import { HiEllipsisHorizontal, HiOutlineBellAlert, HiOutlineBellSlash, HiOutlineExclamationTriangle, HiOutlineTrash, HiSignal, HiSignalSlash} from 'react-icons/hi2'
 import DeletePostDialog from './DeletePostDialog'
 
 type postMenuProps = {

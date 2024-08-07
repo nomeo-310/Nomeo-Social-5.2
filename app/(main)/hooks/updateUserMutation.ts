@@ -3,8 +3,8 @@ import { updateProfileValues } from "@/lib/validation";
 import { InfiniteData, QueryFilters, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation"
 import { updateUserProfile } from "../actions/userActions";
-import { fetchPostType } from "../components/PostFeeds";
 import { toast } from "sonner";
+import { fetchPostType } from "../posts/components/PostFeeds";
 
 export const useUpdateUserMutation = () => {
 

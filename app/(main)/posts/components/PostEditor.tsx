@@ -5,17 +5,16 @@ import { EditorContent, useEditor } from '@tiptap/react'
 import starterKit from '@tiptap/starter-kit'
 import Placeholder from '@tiptap/extension-placeholder'
 import { userProps } from '@/types/types'
-import ImageAvatar from './ImageAvatar'
 import '../extraStyles/styles.css';
-import { toast } from 'sonner'
-import { useSubmitPostMutation } from '../hooks/submitPostMutation'
 import LoadingButton from '@/components/common/LoadingButton'
-import { useMediaUploads } from '../hooks/useMediaUpload'
 import { Button } from '@/components/ui/button'
 import { HiOutlinePhoto, HiXMark } from 'react-icons/hi2'
 import { cn } from '@/lib/utils'
 import Image from 'next/image'
 import { Loader2 } from 'lucide-react'
+import { useSubmitPostMutation } from '../../hooks/submitPostMutation'
+import { useMediaUploads } from '../../hooks/useMediaUpload'
+import ImageAvatar from '../../components/ImageAvatar'
 
 type postEditorProps = {
   currentUser: userProps

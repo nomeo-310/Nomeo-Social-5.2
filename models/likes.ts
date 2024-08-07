@@ -1,13 +1,13 @@
 import mongoose from "mongoose";
 import { Schema } from "mongoose";
 
-const BookmarksSchema:Schema = new Schema({
+const LikesSchema:Schema = new Schema({
   user: { type: Schema.ObjectId, ref: 'User'},
   post: { type: Schema.ObjectId, ref: 'Post'}
 }, {timestamps: true});
 
 (mongoose.models as any) = {};
 
-const Bookmarks = mongoose.model('Bookmarks', BookmarksSchema);
+const Likes = mongoose.model('Likes', LikesSchema);
 
-export default Bookmarks;
+export default Likes;

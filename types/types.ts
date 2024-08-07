@@ -76,3 +76,13 @@ export type followUserInfoProps = {
   followers: number
   isFollowedBy: boolean
 };
+
+export type likeUserInfoProps = {
+  likes: number
+  isLikedByUser: boolean
+};
+
+export type bookmarkInfoProps = {
+  isBookmarkedByUser: boolean
+};
+

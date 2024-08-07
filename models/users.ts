@@ -21,7 +21,7 @@ const UserSchema:Schema = new Schema({
   likes: [{ type: Schema.ObjectId, ref: 'Post'}],
   comments: [{ type: Schema.ObjectId, ref: 'Comment'}],
   notifications: [{ type: Schema.ObjectId, ref: 'Notifications'}],
-  bookmarks : [{ type: Schema.ObjectId, ref: 'Bookmarks'}],
+  bookmarks : [{ type: Schema.ObjectId, ref: 'Post'}],
 }, {timestamps: true});
 
 (mongoose.models as any) = {};

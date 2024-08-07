@@ -1,16 +1,15 @@
 import React, { Suspense } from 'react'
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { postProps } from '@/types/types';
 import { getCurrentUser } from '@/lib/authAction';
 import { getSinglePost } from '../../actions/postActions';
-import PostCard from '../../components/PostCard';
 import ImageAvatar from '../../components/ImageAvatar';
 import Link from 'next/link';
 import { HiOutlineBriefcase, HiOutlineMapPin } from 'react-icons/hi2';
 import { Loader2 } from 'lucide-react';
 import Linkify from '../../components/Linkify';
 import FollowButton from '../../components/FollowButton';
+import PostCard from '../components/PostCard';
 
 type postPageProps = {
   params: { postId: string }
@@ -28,11 +27,11 @@ type userDataProp = {
   occupation: string
   followers: string[]
   following: string[]
-}
+};
 
 type userInfoSidebarProps = {
   userInfo: userDataProp
-}
+};
 
 const getPost = React.cache(async (postId: string) => {
   const post = await getSinglePost(postId);

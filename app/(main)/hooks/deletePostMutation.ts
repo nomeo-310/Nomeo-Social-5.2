@@ -3,7 +3,7 @@ import { InfiniteData, QueryFilters, useMutation, useQueryClient } from "@tansta
 import { usePathname, useRouter } from "next/navigation";
 import { deletePost, getSinglePost } from "../actions/postActions";
 import { toast } from "sonner";
-import { fetchPostType } from "../components/PostFeeds";
+import { fetchPostType } from "../posts/components/PostFeeds";
 
 
 export const useDeletePostMutation = () => {

@@ -1,7 +1,7 @@
 import { InfiniteData, QueryFilters, useMutation, useQueryClient } from "@tanstack/react-query"
 import { createNewPost } from "../actions/postActions"
 import { toast } from "sonner"
-import { fetchPostType } from "../components/PostFeeds";
+import { fetchPostType } from "../posts/components/PostFeeds";
 
 
 export const useSubmitPostMutation = () => {

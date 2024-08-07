@@ -9,8 +9,8 @@ import { formatDate } from 'date-fns';
 import { formatNumber } from '@/lib/utils';
 import FollowerCount from '../../components/FollowerCount';
 import FollowButton from '../../components/FollowButton';
-import UserFeeds from '../../components/UserFeeds';
 import EditUserProfileButton from '../components/EditUserProfileButton';
+import UserFeeds from '../../posts/components/UserFeeds';
 
 type profilePageProps = {
   params: {username: string}

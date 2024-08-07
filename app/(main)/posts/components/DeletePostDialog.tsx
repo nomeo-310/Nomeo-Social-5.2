@@ -1,9 +1,9 @@
 import React from 'react'
 import { postProps } from '@/types/types'
-import { useDeletePostMutation } from '../hooks/deletePostMutation'
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import LoadingButton from '@/components/common/LoadingButton'
 import { Button } from '@/components/ui/button'
+import { useDeletePostMutation } from '../../hooks/deletePostMutation'
 
 type deletePostDialogProps = {
   post: postProps

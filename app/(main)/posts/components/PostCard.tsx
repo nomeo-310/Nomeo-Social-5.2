@@ -3,12 +3,14 @@
 import { postProps, userProps } from '@/types/types'
 import Link from 'next/link'
 import React from 'react'
-import ImageAvatar from './ImageAvatar'
 import { cn, formatPostDate } from '@/lib/utils'
 import AnimationWrapper from '@/components/common/AnimationWrapper'
 import PostMenu from './PostMenu'
-import Linkify from './Linkify'
 import Image from 'next/image'
+import ImageAvatar from '../../components/ImageAvatar'
+import Linkify from '../../components/Linkify'
+import LikeButton from './LikeButton'
+import BookmarkButton from './BookmarkButton'
 
 type postCardProps = {
   post: postProps
@@ -62,10 +64,25 @@ const PostCard = ({post, index, currentUser}: postCardProps) => {
           </div>
           <PostMenu currentUser={currentUser} post={post} className='rounded-full'/>
         </div>
-        { post.attachments.length > 0 && <ImageGrid attachments={post.attachments}/>}
         <Linkify>
           <div className='whitespace-pre-line break-words'>{post.content}</div>
         </Linkify>
+        { post.attachments.length > 0 && <ImageGrid attachments={post.attachments}/>}
+        <hr className='text-muted-foreground'/>
+        <div className="flex items-center justify-between">
+          <LikeButton
+            postId={post._id}
+            initialState={
+              { likes: post.likes.length,
+                isLikedByUser: post.likes.includes(currentUser._id)
+              }
+            }
+          />
+          <BookmarkButton
+            postId={post._id}
+            initialState={{isBookmarkedByUser: post.bookmarks.includes(currentUser._id)}}
+          />
+        </div>
       </article>
     </AnimationWrapper>
   )

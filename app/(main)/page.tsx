@@ -1,9 +1,9 @@
 import { getCurrentUser } from "@/lib/authAction";
-import PostEditor from "./components/PostEditor";
 import TrendsSideBar from "./components/TrendsSideBar";
-import PostFeeds from "./components/PostFeeds";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import FollowingFeeds from "./components/FollowingFeeds";
+import PostEditor from "./posts/components/PostEditor";
+import PostFeeds from "./posts/components/PostFeeds";
+import FollowingFeeds from "./posts/components/FollowingFeeds";
 
 export default async function Home () {
   const currentUser = await getCurrentUser();
