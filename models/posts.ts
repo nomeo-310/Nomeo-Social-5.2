@@ -13,7 +13,7 @@ const PostSchema:Schema = new Schema({
   hidePost: { type: Boolean, default: false },
   postReported: { type: Boolean, default: false },
   totalReports: { type: Number, default: 0 },
-  comments: [{ type: Schema.ObjectId, ref: 'Comment'}],
+  comments: [{ type: Schema.ObjectId, ref: 'Comments'}],
 }, {timestamps: true}); 
 
 

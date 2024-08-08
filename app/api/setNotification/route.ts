@@ -1,12 +1,10 @@
 import { getCurrentUserRawData } from "@/lib/authAction";
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
-import Likes from "@/models/likes";
-import Notifications from "@/models/notifications";
 import Post from "@/models/posts";
-import User from "@/models/users";
 
-export const GET = async (request:Request) => {
+export const GET = async (request: Request) => {
   await connectToMongoDB();
+
   const { postId } = await request.json();
 
   try {
@@ -22,13 +20,9 @@ export const GET = async (request:Request) => {
       return Response.json({error: 'Post not found'}, {status: 404})
     };
 
-    const postLikes = await Likes.countDocuments({post: postId});
-    const like = await Likes.find({post: postId, user: currentUser._id});
+    const notificationStatus = post.hideNotification;
 
-    const data = {
-      likes: postLikes,
-      isLikedByUser: !!like.length
-    };
+    const data = { notificationStatus: notificationStatus };
 
     return Response.json(data);
   } catch (error) {
@@ -37,7 +31,7 @@ export const GET = async (request:Request) => {
   }
 };
 
-export const POST = async (request:Request) => {
+export const POST = async (request: Request) => {
   await connectToMongoDB();
 
   const { postId } = await request.json();
@@ -55,41 +49,19 @@ export const POST = async (request:Request) => {
       return Response.json({error: 'Post not found'}, {status: 404})
     };
 
-    const likeData = {
-      user: currentUser._id,
-      post: postId
-    };
-
-    const like = await Likes.create(likeData);
-    like.save();
-
-    await Post.findOneAndUpdate({_id: postId}, {$push: {likes: currentUser._id}})
-    await User.findOneAndUpdate({_id: currentUser._id}, {$push: {likes: postId}})
-
-    if (post.hideNotification === false) {
-      
-      const notificationData = {
-        user: currentUser._id,
-        post: postId,
-        type: 'like-post'
-      };
-
-      const notification = await Notifications.create(notificationData)
-      notification.save();
-    }
-
-
-    return Response.json({success: 'You liked this post'}, {status: 200})
+    await Post.findOneAndUpdate({_id: postId}, {hideNotification: true})
+    return Response.json({success: 'You have turn off notification for this post'}, {status: 200})
   } catch (error) {
     console.error(error)
     return Response.json({error: 'Internal server error'}, {status: 500});
   }
 };
 
-export const DELETE = async (request:Request) => {
+export const PUT = async (request:Request) => {
   await connectToMongoDB();
+
   const { postId } = await request.json();
-  
+
   try {
     const currentUser = await getCurrentUserRawData();
 
@@ -97,12 +69,15 @@ export const DELETE = async (request:Request) => {
       return Response.json({error: 'Unathorized'}, {status: 401})
     };
 
-    await Likes.deleteMany({user: currentUser._id, post: postId})
-
-    await Post.findOneAndUpdate({_id: postId}, {$pull: {likes: currentUser._id}})
-    await User.findOneAndUpdate({_id: currentUser._id}, {$pull: {likes: postId}})
+    const post = await Post.findOne({_id: postId})
     
-    return Response.json({success: 'You no longer like the post'}, {status: 200})
+    if (!post) {
+      return Response.json({error: 'Post not found'}, {status: 404})
+    };
+
+    await Post.findOneAndUpdate({_id: postId}, {hideNotification: false})
+
+    return Response.json({success: 'You have turn on notification for this post'}, {status: 200})
   } catch (error) {
     console.error(error)
     return Response.json({error: 'Internal server error'}, {status: 500});

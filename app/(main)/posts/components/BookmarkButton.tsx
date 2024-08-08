@@ -66,7 +66,13 @@ const BookmarkButton = ({postId, initialState}: bookmarkButtonProps) => {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({ postId: postId})
-      })
+      });
+
+      if (!response.ok) {
+        throw new Error('Something went wrong, try again later');
+      };
+
+      toast.success('You unbookmarked this post')
     } catch (error) {
       console.error(error)
       throw new Error('Internal server error, try again later');

@@ -38,7 +38,7 @@ export const useSubmitPostMutation = () => {
         predicate(query) {
           return !query.state.data
         }
-      })
+      });
 
       toast.success('Post successfully created');
     },

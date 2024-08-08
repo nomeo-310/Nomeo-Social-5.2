@@ -22,6 +22,15 @@ export const GET = async (request: NextRequest, { params: {userId}}: {params: {u
     const posts = await Post.find({author: userId})
     .populate('author', '_id username displayName image followers following city state')
     .populate('attachments', '_id url type')
+    // .populate({
+    //   path: 'comments',
+    //   populate: [
+    //     {
+    //       path: 'author',
+    //       select: '_id image displayName username followers following'
+    //     }
+    //   ]
+    // })
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);

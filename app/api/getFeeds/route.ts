@@ -18,9 +18,20 @@ export const GET = async (request: NextRequest) => {
       return Response.json({error: 'Unathourized'}, {status: 401})
     }
 
-    const posts = await Post.find()
+    const posts = await Post.find({hidePost: false, isBarred: false})
     .populate('author', '_id username displayName image followers following city state')
     .populate('attachments', '_id url type')
+    // .populate({
+    //   path: 'comments',
+    //   model: Comments,
+    //   populate: [
+    //     {
+    //       path: 'author',
+    //       select: '_id image displayName username followers following',
+    //       model: User
+    //     }
+    //   ]
+    // })
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);

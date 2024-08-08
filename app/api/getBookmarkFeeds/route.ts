@@ -1,6 +1,9 @@
 import { getCurrentUser } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
+import Bookmarks from "@/models/bookmarks";
+import Media from "@/models/media";
 import Post from "@/models/posts";
+import User from "@/models/users";
 import { NextRequest } from "next/server";
 
 export const GET = async (request: NextRequest) => {
@@ -18,9 +21,13 @@ export const GET = async (request: NextRequest) => {
       return Response.json({error: 'Unathourized'}, {status: 401})
     }
 
-    const currentUserFollowings = currentUser.following;
+    const allBookmarks = await Bookmarks.find({user: currentUser._id})
+    .select('post')
+    .sort({createdAt: 'descending'});
 
-    const posts = await Post.find({author: {$in: currentUserFollowings}})
+    const allBookmarkPostIds = JSON.parse(JSON.stringify(allBookmarks)).map((i: { post: string; }) => i.post)
+
+    const bookmarks = await Post.find({_id: {$in: allBookmarkPostIds}})
     .populate('author', '_id username displayName image followers following city state')
     .populate('attachments', '_id url type')
     // .populate({
@@ -32,14 +39,13 @@ export const GET = async (request: NextRequest) => {
     //     }
     //   ]
     // })
-    .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);
 
-    const nextPage = posts.length > pageSize ? page + 1 : undefined;
+    const nextPage = bookmarks.length > pageSize ? page + 1 : undefined;
 
     const data = {
-      posts: posts.slice(0, pageSize),
+      posts: bookmarks.slice(0, pageSize),
       nextPage: nextPage
     }
 

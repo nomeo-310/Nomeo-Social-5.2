@@ -19,7 +19,7 @@ const UserSchema:Schema = new Schema({
   followers: [{ type: Schema.ObjectId, ref: 'User'}],
   following: [{ type: Schema.ObjectId, ref: 'User'}],
   likes: [{ type: Schema.ObjectId, ref: 'Post'}],
-  comments: [{ type: Schema.ObjectId, ref: 'Comment'}],
+  comments: [{ type: Schema.ObjectId, ref: 'Comments'}],
   notifications: [{ type: Schema.ObjectId, ref: 'Notifications'}],
   bookmarks : [{ type: Schema.ObjectId, ref: 'Post'}],
 }, {timestamps: true});

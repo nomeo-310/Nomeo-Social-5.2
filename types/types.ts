@@ -34,17 +34,17 @@ export type postProps = {
   _id: string
   content: string
   author: {
+    _id: string
     username: string
     displayName: string
     image: string
-    _id: string
+    followers: string[]
+    following: string[]
     bio: string
     city: string
     state: string
     country: string
     occupation: string
-    followers: string[]
-    following: string[]
   }
   attachments: [
     { _id: string
@@ -59,7 +59,22 @@ export type postProps = {
   hidePost: boolean,
   postReported: boolean,
   totalReports: number,
-  comments: string[],
+  comments: [
+    {
+      _id: string
+      author: {
+        _id: string
+        username: string
+        displayName: string
+        image: string
+        followers: string[]
+        following: string[]
+      },
+      content: string
+      createdAt: string
+      updatedAt: string
+    }
+  ],
   createdAt: string
   updatedAt: string
 }
@@ -85,4 +100,27 @@ export type likeUserInfoProps = {
 export type bookmarkInfoProps = {
   isBookmarkedByUser: boolean
 };
+
+export type notificationStatusProps = {
+  notificationStatus: boolean
+};
+
+export type visibilityStatusProps = {
+  visibilityStatus: boolean
+};
+
+export type commentProps = {
+  _id: string
+  content: string
+  author: {
+    _id: string
+    displayName: string
+    username: string
+    image: string
+    followers: string[]
+    following: string[]
+  }
+  post: string
+  createdAt: string
+}
 

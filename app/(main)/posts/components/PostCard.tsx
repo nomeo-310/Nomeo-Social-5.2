@@ -11,6 +11,8 @@ import ImageAvatar from '../../components/ImageAvatar'
 import Linkify from '../../components/Linkify'
 import LikeButton from './LikeButton'
 import BookmarkButton from './BookmarkButton'
+import { HiOutlineChatBubbleLeft } from 'react-icons/hi2'
+import CommentSection from '../../components/CommentSection'
 
 type postCardProps = {
   post: postProps
@@ -24,7 +26,14 @@ type imageItem = {
   type: string
 };
 
+type commentButtonProps = {
+  post: postProps
+  onClick: () => void
+}
+
 const PostCard = ({post, index, currentUser}: postCardProps) => {
+
+  const [showComment, setShowComment] = React.useState(false);
 
   const ImageGrid = ({attachments}:{attachments: imageItem[]}) => {
     return (
@@ -44,6 +53,17 @@ const PostCard = ({post, index, currentUser}: postCardProps) => {
       </div>
     )
   };
+
+  const CommentButton = ({post, onClick}:commentButtonProps) => {
+    return (
+      <button className='flex items-center gap-2' onClick={onClick}>
+        <HiOutlineChatBubbleLeft size={20}/>
+        <span className='text-sm font-medium tabular-nums'>
+          {post.comments.length} <span className='hidden sm:inline'>{post.comments.length > 1 ? 'comments': 'comment'}</span>
+        </span>
+      </button>
+    )
+  }
 
   return (
     <AnimationWrapper key={index} transition={{duration: 1, delay: index && index*0}} keyValue={`${index}`}>
@@ -70,19 +90,23 @@ const PostCard = ({post, index, currentUser}: postCardProps) => {
         { post.attachments.length > 0 && <ImageGrid attachments={post.attachments}/>}
         <hr className='text-muted-foreground'/>
         <div className="flex items-center justify-between">
-          <LikeButton
-            postId={post._id}
-            initialState={
-              { likes: post.likes.length,
-                isLikedByUser: post.likes.includes(currentUser._id)
+          <div className="flex items-center gap-5">
+            <LikeButton
+              postId={post._id}
+              initialState={
+                { likes: post.likes.length,
+                  isLikedByUser: post.likes.includes(currentUser._id)
+                }
               }
-            }
-          />
+            />
+            <CommentButton post={post} onClick={() => setShowComment((prevState) => !prevState)}/>
+          </div>
           <BookmarkButton
             postId={post._id}
             initialState={{isBookmarkedByUser: post.bookmarks.includes(currentUser._id)}}
           />
         </div>
+        { showComment && <CommentSection currentUser={currentUser} post={post}/> }
       </article>
     </AnimationWrapper>
   )

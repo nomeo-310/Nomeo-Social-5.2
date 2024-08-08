@@ -50,6 +50,15 @@ export const getSinglePost = async (id: string) => {
   const post = await Post.findOne({_id: id})
   .populate('author', '_id username displayName image followers following bio city state country occupation')
   .populate('attachments', '_id url type')
+  .populate({
+    path: 'comments',
+    populate: [
+      {
+        path: 'author',
+        select: '_id image displayName username followers following'
+      }
+    ]
+  })
 
   if (!post) throw Error('Post not found')
 
