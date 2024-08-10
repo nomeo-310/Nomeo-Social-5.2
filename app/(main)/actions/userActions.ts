@@ -38,4 +38,4 @@ export const updateUserProfile = async (values: updateProfileValues) => {
   const updateData = JSON.parse(JSON.stringify(updatedUser));
 
   return updateData;
-}
+};

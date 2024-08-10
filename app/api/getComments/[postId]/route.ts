@@ -25,14 +25,14 @@ export const GET = async (request:NextRequest, {params: { postId }}: {params: {p
 
     const comments = await Comments.find({post: postId})
     .populate('author', '_id username displayName image followers following city')
-    .sort({createdAt: 'ascending'})
+    .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
-    .limit(-pageSize - 1);
+    .limit(pageSize + 1);
 
-    const previousPage = comments.length > pageSize ? page : undefined;
+    const previousPage = comments.length > pageSize ? page + 1 : undefined;
 
     const data = {
-      comments: comments.length > pageSize ? comments.slice(1) : comments,
+      comments: comments.slice(0, pageSize),
       previousPage: previousPage
     };
 

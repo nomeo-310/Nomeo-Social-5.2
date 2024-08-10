@@ -35,10 +35,6 @@ const CommentSection = ({currentUser, post}: commentSectionProps) => {
     queryFn: fetchApiData,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.previousPage,
-    select: (data) => ({
-      pages: [...data.pages].reverse(),
-      pageParams: [...data.pageParams].reverse(),
-    })
   });
 
   const comments = data?.pages.flatMap(page => page.comments) || []
@@ -47,7 +43,7 @@ const CommentSection = ({currentUser, post}: commentSectionProps) => {
     <div className='space-y-3'>
       <CommentInput post={post} currentUser={currentUser}/>
         {hasNextPage && (
-          <Button variant={'link'} className='mx-auto block' disabled={isFetching} onClick={() => fetchNextPage()}>
+          <Button variant={'link'} className='mx-auto block text-base' disabled={isFetching} onClick={() => fetchNextPage()}>
             Load previous comments
           </Button>)
         }
@@ -62,7 +58,7 @@ const CommentSection = ({currentUser, post}: commentSectionProps) => {
         }
       <div className="divide-y">
         { comments.map((comment) => (
-          <Comment comment={comment} key={comment._id}/>
+          <Comment comment={comment} key={comment._id} currentUser={currentUser}/>
         ))}
       </div>
     </div>

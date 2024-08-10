@@ -1,11 +1,12 @@
-'use client'
-
-
 import React from 'react'
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { HiOutlineBell, HiOutlineBookmark, HiOutlineEnvelope, HiOutlineFilm, HiOutlineHome, HiOutlinePhoto } from 'react-icons/hi2';
+import { HiOutlineBookmark, HiOutlineEnvelope, HiOutlineFilm, HiOutlineHome, HiOutlinePhoto } from 'react-icons/hi2';
 import { IconType } from 'react-icons/lib';
+import NotificationButton from '../notifications/components/NotificationButton';
+import { getCurrentUser } from '@/lib/authAction';
+import { connectToMongoDB } from '@/lib/connectToMongoDb';
+import Notifications from '@/models/notifications';
 
 type menuBarProps = {
   className?: string
@@ -17,7 +18,15 @@ type menuListProps = {
   icon: IconType
 };
 
-const MenuBar = ({className}: menuBarProps) => {
+const MenuBar = async ({className}: menuBarProps) => {
+  await connectToMongoDB();
+  const currentUser = await getCurrentUser();
+
+  if (!currentUser) {
+    return;
+  };
+
+  const notificationCounts = await Notifications.countDocuments({recipient: currentUser._id, read: false})
 
   const menuList = [
     {
@@ -26,19 +35,14 @@ const MenuBar = ({className}: menuBarProps) => {
       icon: HiOutlineHome
     },
     {
-      name: 'Notifications',
-      path: '/notifications',
-      icon: HiOutlineBell
+      name: 'Bookmarks',
+      path: '/bookmarks',
+      icon: HiOutlineBookmark
     },
     {
       name: 'Messages',
       path: '/messages',
       icon: HiOutlineEnvelope
-    },
-    {
-      name: 'Bookmarks',
-      path: '/bookmarks',
-      icon: HiOutlineBookmark
     },
     {
       name: 'Images',
@@ -70,9 +74,32 @@ const MenuBar = ({className}: menuBarProps) => {
 
   return (
     <div className={className}>
-      {menuList.map((item:menuListProps) => (
-        <MenuButton key={item.name} {...item}/>
-      ))}
+      <MenuButton 
+        name={menuList[0].name} 
+        path={menuList[0].path} 
+        icon={menuList[0].icon}        
+      />
+      <NotificationButton initialState={{unreadCounts: notificationCounts}}/>
+      <MenuButton 
+        name={menuList[1].name} 
+        path={menuList[1].path} 
+        icon={menuList[1].icon}        
+      />
+      <MenuButton 
+        name={menuList[2].name} 
+        path={menuList[2].path} 
+        icon={menuList[2].icon}        
+      />
+      <MenuButton 
+        name={menuList[3].name} 
+        path={menuList[3].path} 
+        icon={menuList[3].icon}        
+      />
+      <MenuButton 
+        name={menuList[4].name} 
+        path={menuList[4].path} 
+        icon={menuList[4].icon}        
+      />
     </div>
   )
 }

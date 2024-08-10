@@ -1,6 +1,7 @@
 import { getCurrentUserRawData } from "@/lib/authAction";
 import { connectToMongoDB } from "@/lib/connectToMongoDb"
 import Followers from "@/models/followers";
+import Notifications from "@/models/notifications";
 import User from "@/models/users";
 
 export const GET = async (request: Request) => {
@@ -58,6 +59,17 @@ export const POST = async (request: Request) => {
 
     await User.findOneAndUpdate({_id: currentUser._id}, {$push: {following: userId}})
     await User.findOneAndUpdate({_id: userId}, {$push: {followers: currentUser._id}})
+
+    const notificationData = {
+      issuer: currentUser._id,
+      recipient: userId,
+      type: 'user-followed'
+    };
+
+    const notification = await Notifications.create(notificationData)
+    notification.save();
+
+    await User.findOneAndUpdate({_id: userId}, {$push: {notifications: notification._id}})
 
     return Response.json({success: 'You are now following user'}, {status: 200})
   } catch (error) {

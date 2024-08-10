@@ -66,17 +66,21 @@ export const POST = async (request:Request) => {
     await Post.findOneAndUpdate({_id: postId}, {$push: {likes: currentUser._id}})
     await User.findOneAndUpdate({_id: currentUser._id}, {$push: {likes: postId}})
 
-    if (post.hideNotification === false) {
+    if (post.hideNotification === false && JSON.stringify(post.author) !== JSON.stringify(currentUser._id)) {
       
       const notificationData = {
-        user: currentUser._id,
+        issuer: currentUser._id,
+        recipient: post.author,
         post: postId,
         type: 'like-post'
       };
 
       const notification = await Notifications.create(notificationData)
       notification.save();
+
+      await User.findOneAndUpdate({_id: post.author}, {$push: {notifications: notification._id}})
     }
+
 
 
     return Response.json({success: 'You liked this post'}, {status: 200})

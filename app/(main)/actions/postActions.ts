@@ -4,14 +4,12 @@ import { getCurrentUserRawData } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { createPostSchema } from "@/lib/validation";
 import Media from "@/models/media";
+import Notifications from "@/models/notifications";
 import Post from "@/models/posts";
 import User from "@/models/users";
 import { postProps } from "@/types/types";
 
-export const createNewPost = async (input: {
-  content: string,
-  attachmentIds: string[]
-}) => {
+export const createNewPost = async (input: {content: string, attachmentIds: string[]}) => {
   await connectToMongoDB();
 
   const currentUser = await getCurrentUserRawData();
@@ -50,15 +48,6 @@ export const getSinglePost = async (id: string) => {
   const post = await Post.findOne({_id: id})
   .populate('author', '_id username displayName image followers following bio city state country occupation')
   .populate('attachments', '_id url type')
-  .populate({
-    path: 'comments',
-    populate: [
-      {
-        path: 'author',
-        select: '_id image displayName username followers following'
-      }
-    ]
-  })
 
   if (!post) throw Error('Post not found')
 
@@ -81,6 +70,8 @@ export const deletePost = async (id: string) => {
   if (JSON.stringify(post.author) !== JSON.stringify(currentUser._id)) throw Error('Unathourized');
 
   await Media.updateMany({_id: {$in: post.attachments}}, { $unset: { post: "", author: "" }})
+
+  await Notifications.deleteMany({post: id})
 
   await Post.deleteOne({_id: id})
 

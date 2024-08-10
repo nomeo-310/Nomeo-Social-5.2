@@ -1,0 +1,69 @@
+'use client'
+
+
+import React from 'react'
+import { notificationProps, userProps } from '@/types/types'
+import { useInfiniteQuery } from '@tanstack/react-query'
+import NotificationLoadingSkeleton from './NotificationLoadingSkeleton'
+import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
+import { Loader2 } from 'lucide-react'
+import NotificationCard from './NotificationCard'
+
+type notificationClientProps = {
+  currentUser: userProps
+}
+
+const NotificationsClient = ({currentUser}: notificationClientProps) => {
+
+  const fetchApiData = async ({pageParam}: {pageParam: number}) => {
+    const response = await fetch(`/api/getNotifications?page=${pageParam}`);
+    
+    if (!response.ok) {
+      throw new Error('Something went wrong, try again later');
+    }
+
+    const data = await response.json();
+    return data
+  };
+
+  const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status} = useInfiniteQuery({
+    queryKey: ['notifications'],
+    queryFn: fetchApiData,
+    initialPageParam: 1,
+    getNextPageParam: (lastPage) => lastPage.nextPage
+  });
+
+  const notifications:notificationProps[] = data?.pages.flatMap(page => page.notifications) || [];
+  console.log(notifications)
+
+  if (status === 'pending') {
+    return <NotificationLoadingSkeleton/>
+  };
+
+  if (status === 'success' && !notifications.length && !hasNextPage) {
+    return  (
+      <p className='text-base lg:text-lg text-center text-muted-foreground'>
+        You don&apos;t have any notifications yet
+      </p>
+    )
+  };
+
+  if (status === 'error') {
+    return (
+      <p className='text-base lg:text-lg text-center text-destructive'>
+        An error occur while loading notifications
+      </p>
+    )
+  };
+
+  return (
+    <InfiniteScrollContainer className='space-y-4' onBottomReached={() => hasNextPage && !isFetching && fetchNextPage()}>
+      { notifications && notifications.length > 0 && notifications.map((notification:notificationProps, index: number) => (
+        <NotificationCard key={notification._id} notification={notification} index={index} currentUser={currentUser}/>
+      ))}
+      { isFetchingNextPage && <Loader2 className='mx-auto animate-spin my-3'/> }
+    </InfiniteScrollContainer>
+  )
+}
+
+export default NotificationsClient

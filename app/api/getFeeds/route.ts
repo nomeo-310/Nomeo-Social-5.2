@@ -21,17 +21,6 @@ export const GET = async (request: NextRequest) => {
     const posts = await Post.find({hidePost: false, isBarred: false})
     .populate('author', '_id username displayName image followers following city state')
     .populate('attachments', '_id url type')
-    // .populate({
-    //   path: 'comments',
-    //   model: Comments,
-    //   populate: [
-    //     {
-    //       path: 'author',
-    //       select: '_id image displayName username followers following',
-    //       model: User
-    //     }
-    //   ]
-    // })
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);
@@ -41,7 +30,7 @@ export const GET = async (request: NextRequest) => {
     const data = {
       posts: posts.slice(0, pageSize),
       nextPage: nextPage
-    }
+    };
 
     return Response.json(data)
   } catch (error) {

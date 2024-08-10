@@ -42,7 +42,7 @@ const BookmarksClient = ({currentUser}:postFeedProps) => {
 
   if (status === 'pending') {
     return <PostLoadingSkeleton/>
-  }
+  };
 
   if (status === 'success' && !posts.length && !hasNextPage) {
     return  (
@@ -50,7 +50,7 @@ const BookmarksClient = ({currentUser}:postFeedProps) => {
         You don&apos;t have any bookmarks yet
       </p>
     )
-  }
+  };
 
   if (status === 'error') {
     return (
@@ -58,7 +58,7 @@ const BookmarksClient = ({currentUser}:postFeedProps) => {
         An error occur while loading bookmarks
       </p>
     )
-  }
+  };
 
 
   return (

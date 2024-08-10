@@ -122,5 +122,25 @@ export type commentProps = {
   }
   post: string
   createdAt: string
-}
+};
+
+export type notificationProps = {
+  _id: string
+  issuer: {
+    displayName: string
+    username: string
+    image: string
+  }
+  post?: {
+    _id: string
+    content: string
+  }
+  comment: string
+  type: string
+  read: boolean
+};
+
+export type notificationCountProps = {
+  unreadCounts: number
+};
 
