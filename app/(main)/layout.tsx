@@ -10,6 +10,7 @@ import ReactQueryProvider from "@/providers/ReactQueryProvider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin"
 import { extractRouterConfig } from "uploadthing/server";
 import { fileRouter } from "../api/uploadthing/core";
+import AuthProvider from "@/providers/AuthProvider";
 
 export const metadata: Metadata = {
   title: {template: "%s | Nomeo Social", default: "Home Page | Nomeo Social"},
@@ -32,20 +33,22 @@ export default async function RootLayout({children,}: Readonly<{children: React.
   return (
     <html lang="en">
       <body className={`${urbanist.variable} ${barlow.variable}`}>
-        <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)}/>
-        <ReactQueryProvider>
-          <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange >
-            <ToastProvider/>
-            <div className="flex min-h-screen flex-col">
-              <NavBar currentUser={currentUser}/>
-              <div className="max-w-7xl p-4 mx-auto flex w-full grow gap-4">
-                <MenuBar className="cursor-pointer sticky top-[5rem] h-fit hidden sm:block flex-none space-y-3 rounded-md bg-card px-3 py-4 xl:px-4 shadow-sm xl:w-72"/>
-                {children}
+        <AuthProvider>
+          <NextSSRPlugin routerConfig={extractRouterConfig(fileRouter)}/>
+          <ReactQueryProvider>
+            <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange >
+              <ToastProvider/>
+              <div className="flex min-h-screen flex-col">
+                <NavBar currentUser={currentUser}/>
+                <div className="max-w-7xl p-4 mx-auto flex w-full grow gap-4">
+                  <MenuBar className="cursor-pointer sticky top-[5rem] h-fit hidden sm:block flex-none space-y-3 rounded-md bg-card px-3 py-4 xl:px-4 shadow-sm xl:w-72"/>
+                  {children}
+                </div>
+                <MenuBar className="sticky bottom-0 flex w-full justify-center gap-5 border-t bg-card p-3 sm:hidden"/>
               </div>
-              <MenuBar className="sticky bottom-0 flex w-full justify-center gap-5 border-t bg-card p-3 sm:hidden"/>
-            </div>
-          </ThemeProvider>
-        </ReactQueryProvider>
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </AuthProvider>
       </body>
     </html>
   );

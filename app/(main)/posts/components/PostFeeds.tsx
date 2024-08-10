@@ -38,7 +38,7 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
     getNextPageParam: (lastPage) => lastPage.nextPage
   });
 
-  const posts = data?.pages.flatMap(page => page.posts) || [];
+  const posts:postProps[] = data?.pages.flatMap(page => page.posts) || [];
 
   if (status === 'pending') {
     return <PostLoadingSkeleton/>

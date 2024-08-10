@@ -29,7 +29,8 @@ export const createNewPost = async (input: {content: string, attachmentIds: stri
     await Media.updateMany({_id: {$in: attachmentIds}}, {post: post._id, author: currentUser._id})
 
     const newPostValue =  await Post.findOne({_id: post._id})
-    .populate('author', '_id username displayName image followers following');
+    .populate('author', '_id username displayName image followers following')
+    .populate('attachments', '_id url type')
 
     const newPost = JSON.parse(JSON.stringify(newPostValue));
 

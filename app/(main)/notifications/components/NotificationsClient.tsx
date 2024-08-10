@@ -3,7 +3,7 @@
 
 import React from 'react'
 import { notificationProps, userProps } from '@/types/types'
-import { useInfiniteQuery } from '@tanstack/react-query'
+import { useInfiniteQuery, useMutation, useQueryClient } from '@tanstack/react-query'
 import NotificationLoadingSkeleton from './NotificationLoadingSkeleton'
 import InfiniteScrollContainer from '@/components/common/InfiniteScrollContainer'
 import { Loader2 } from 'lucide-react'
@@ -15,7 +15,7 @@ type notificationClientProps = {
 
 const NotificationsClient = ({currentUser}: notificationClientProps) => {
 
-  const fetchApiData = async ({pageParam}: {pageParam: number}) => {
+  const getNotifications = async ({pageParam}: {pageParam: number}) => {
     const response = await fetch(`/api/getNotifications?page=${pageParam}`);
     
     if (!response.ok) {
@@ -26,15 +26,48 @@ const NotificationsClient = ({currentUser}: notificationClientProps) => {
     return data
   };
 
+  const readNotification = async () => {
+    try {
+      const response = await fetch('/api/getNotifications/mark-as-read', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Something went wrong, try again later');
+      }
+    } catch (error) {
+      console.error(error)
+      throw new Error('Internal server error, try again later');
+    }
+  };
+
   const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status} = useInfiniteQuery({
     queryKey: ['notifications'],
-    queryFn: fetchApiData,
+    queryFn: getNotifications,
     initialPageParam: 1,
     getNextPageParam: (lastPage) => lastPage.nextPage
   });
 
+  const queryClient = useQueryClient();
+
+  const { mutate } = useMutation({
+    mutationFn: readNotification,
+    onSuccess: () => {
+      queryClient.setQueryData(['unread-notification-count'], { unreadCounts: 0 })
+    },
+    onError(error) {
+      console.error('Failed to mark notifications as read', error)
+    }
+  });
+
+  React.useEffect(() => {
+    mutate();
+  }, [mutate]);
+
   const notifications:notificationProps[] = data?.pages.flatMap(page => page.notifications) || [];
-  console.log(notifications)
 
   if (status === 'pending') {
     return <NotificationLoadingSkeleton/>

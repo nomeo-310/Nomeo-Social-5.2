@@ -2,6 +2,7 @@ import { InfiniteData, QueryFilters, useMutation, useQueryClient } from "@tansta
 import { createNewPost } from "../actions/postActions"
 import { toast } from "sonner"
 import { fetchPostType } from "../posts/components/PostFeeds";
+import { postProps } from "@/types/types";
 
 
 export const useSubmitPostMutation = () => {
@@ -10,7 +11,7 @@ export const useSubmitPostMutation = () => {
 
   const mutation = useMutation({
     mutationFn: createNewPost,
-    onSuccess: async (newPost) => {
+    onSuccess: async (newPost:postProps) => {
       const queryFilter: QueryFilters = {queryKey: ['post-feed', 'all-posts']};
       await queryClient.cancelQueries(queryFilter);
 

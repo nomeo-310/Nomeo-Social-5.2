@@ -5,6 +5,7 @@ import bcrypt from 'bcrypt'
 import { signInSchema } from '@/lib/validation'
 import clientPromise from '@/lib/mongoDBClientPromise'
 import { getUserByUsername } from '@/lib/authAction'
+import { userProps } from '@/types/types'
 
 export const authOptions: AuthOptions = {
   
@@ -24,7 +25,7 @@ export const authOptions: AuthOptions = {
           throw new Error('Invalid Credentials');
         }
 
-        const user = await getUserByUsername(username);
+        const user:userProps = await getUserByUsername(username);
 
         if (!user || !user?.hashedPassword) {
           throw new Error('Invalid Credentials')
@@ -36,14 +37,31 @@ export const authOptions: AuthOptions = {
           throw new Error('Wrong Password')
         }
 
-        return user
+        return user 
       }
     }),
   ],
   pages: {
     signIn: '/sign-in'
   },
+  session: {
+    strategy: "jwt"
+  },
+  callbacks: {
+    jwt: async({ token, user }) => {
+      if (user) {
+        return {
+          ...token,
+          user : user
+        }
+      }
+      return token;
+    },
+    session: async({session, token }: {session: any, token: any}) => {
+      session.user = token.user
+      return session;
+    }
+  },
   debug: process.env.NODE_ENV === 'development',
-  session: { strategy: 'jwt'},
   secret: process.env.NEXTAUTH_SECRET,
 }

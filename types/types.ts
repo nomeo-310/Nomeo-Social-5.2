@@ -30,6 +30,33 @@ export type userProps = {
   updatedAt: string
 };
 
+
+export type sessionUserProps = {
+  _id: string
+  name: string 
+  email: string
+  username: string
+  displayName: string
+  hashedPassword: string
+  bio: string
+  city: string
+  state: string
+  image: string
+  website: string
+  occupation: string
+  profileImage: imageProps
+  country: string,
+  posts: string[],
+  followers: string[],
+  following: string[],
+  likes: string[],
+  comments: string[],
+  notifications: string[],
+  bookmarks : string[],
+  createdAt: string
+  updatedAt: string
+};
+
 export type postProps = {
   _id: string
   content: string
@@ -143,4 +170,15 @@ export type notificationProps = {
 export type notificationCountProps = {
   unreadCounts: number
 };
+
+export type mediaProps = {
+  _id: string
+  url: string
+  type: string
+  post: {
+    _id: string
+    content: string
+    createdAt: string
+  }
+}
 
