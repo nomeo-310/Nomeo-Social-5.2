@@ -41,7 +41,7 @@ export const generateMetadata = async ({params: {username}}: profilePageProps):P
   };
 };
 
-const page = async ({params: {username}}: profilePageProps) => {
+const Page = async ({params: {username}}: profilePageProps) => {
   const loggedInUser = await getCurrentUser();
 
   if (!loggedInUser) {
@@ -110,4 +110,4 @@ const page = async ({params: {username}}: profilePageProps) => {
   )
 };
 
-export default page
+export default Page

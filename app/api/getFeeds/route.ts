@@ -32,7 +32,7 @@ export const GET = async (request: NextRequest) => {
       nextPage: nextPage
     };
 
-    return Response.json(data)
+    return Response.json(data);
   } catch (error) {
     console.error(error)
     return Response.json({error: 'Internal server error, try again later'}, {status: 500});

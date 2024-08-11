@@ -50,7 +50,7 @@ export const generateMetadata = async ({params: { postId }}: postPageProps):Prom
   };
 };
 
-const page = async ({params: {postId}}: postPageProps) => {
+const Page = async ({params: {postId}}: postPageProps) => {
 
   const loggedInUser = await getCurrentUser();
 
@@ -119,4 +119,4 @@ const UserInfoSideBar = async ({userInfo}:userInfoSidebarProps) => {
   )
 };
 
-export default page
+export default Page

@@ -9,7 +9,7 @@ export const metadata: Metadata = {
   title: "Notifications"
 };
 
-const page = async () => {
+const Page = async () => {
   const currentUser = await getCurrentUser();
 
   return (
@@ -25,4 +25,4 @@ const page = async () => {
   );
 };
 
-export default page;
+export default Page;

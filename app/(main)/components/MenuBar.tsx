@@ -40,11 +40,6 @@ const MenuBar = async ({className}: menuBarProps) => {
       icon: HiOutlineBookmark
     },
     {
-      name: 'Messages',
-      path: '/messages',
-      icon: HiOutlineEnvelope
-    },
-    {
       name: 'Images',
       path: '/image-gallery',
       icon: HiOutlinePhoto
@@ -79,7 +74,9 @@ const MenuBar = async ({className}: menuBarProps) => {
         path={menuList[0].path} 
         icon={menuList[0].icon}        
       />
-      <NotificationButton initialState={{unreadCounts: notificationCounts}}/>
+      <NotificationButton 
+        initialState={{unreadCounts: notificationCounts}}
+      />
       <MenuButton 
         name={menuList[1].name} 
         path={menuList[1].path} 
@@ -94,11 +91,6 @@ const MenuBar = async ({className}: menuBarProps) => {
         name={menuList[3].name} 
         path={menuList[3].path} 
         icon={menuList[3].icon}        
-      />
-      <MenuButton 
-        name={menuList[4].name} 
-        path={menuList[4].path} 
-        icon={menuList[4].icon}        
       />
     </div>
   )

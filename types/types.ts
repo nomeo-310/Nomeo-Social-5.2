@@ -2,38 +2,11 @@
 type imageProps = {
   public_id: string, 
   secure_url: string
-}
+};
 
 export type userProps = {
   _id: string
   name: string
-  email: string
-  username: string
-  displayName: string
-  hashedPassword: string
-  bio: string
-  city: string
-  state: string
-  image: string
-  website: string
-  occupation: string
-  profileImage: imageProps
-  country: string,
-  posts: string[],
-  followers: string[],
-  following: string[],
-  likes: string[],
-  comments: string[],
-  notifications: string[],
-  bookmarks : string[],
-  createdAt: string
-  updatedAt: string
-};
-
-
-export type sessionUserProps = {
-  _id: string
-  name: string 
   email: string
   username: string
   displayName: string
@@ -104,7 +77,7 @@ export type postProps = {
   ],
   createdAt: string
   updatedAt: string
-}
+};
 
 export type suggestedUserProps = {
   followers: string[]

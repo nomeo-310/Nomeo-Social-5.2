@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: "Sign In"
 };
 
-const page = () => {
+const Page = () => {
   return (
     <AuthLayout imageSrc='/images/bg_1.jpg'>
       <div className="flex flex-col gap-4">
@@ -23,4 +23,4 @@ const page = () => {
   )
 }
 
-export default page
+export default Page;

@@ -36,4 +36,4 @@ export const signUp = async (credentials: signUpValues) => {
     console.error(error);
     return {error: 'Internal server error, try again later'}
   }
-}
+};

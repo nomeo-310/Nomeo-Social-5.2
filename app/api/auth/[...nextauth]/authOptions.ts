@@ -7,6 +7,7 @@ import clientPromise from '@/lib/mongoDBClientPromise'
 import { getUserByUsername } from '@/lib/authAction'
 import { userProps } from '@/types/types'
 
+
 export const authOptions: AuthOptions = {
   
   adapter: MongoDBAdapter(clientPromise) as any,
@@ -17,6 +18,7 @@ export const authOptions: AuthOptions = {
         username: {label: 'username', type: 'text'},
         password: {label: 'password', type: 'password'}, 
       },
+      //@ts-ignore
       async authorize(credentials) {
         
         const {username, password} = signInSchema.parse(credentials);
@@ -41,27 +43,8 @@ export const authOptions: AuthOptions = {
       }
     }),
   ],
-  pages: {
-    signIn: '/sign-in'
-  },
-  session: {
-    strategy: "jwt"
-  },
-  callbacks: {
-    jwt: async({ token, user }) => {
-      if (user) {
-        return {
-          ...token,
-          user : user
-        }
-      }
-      return token;
-    },
-    session: async({session, token }: {session: any, token: any}) => {
-      session.user = token.user
-      return session;
-    }
-  },
+  pages: {signIn: '/sign-in'},
+  session: {strategy: "jwt"},
   debug: process.env.NODE_ENV === 'development',
   secret: process.env.NEXTAUTH_SECRET,
 }

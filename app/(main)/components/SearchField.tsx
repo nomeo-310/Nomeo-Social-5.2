@@ -20,7 +20,7 @@ const SearchField = () => {
       return;
     };
 
-    router.push(`/search?q=${encodeURIComponent(query)}`)
+    router.push(`/search?query=${encodeURIComponent(query)}`)
   };
 
   return (
