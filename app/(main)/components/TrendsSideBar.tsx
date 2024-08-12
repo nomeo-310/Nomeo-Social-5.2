@@ -47,7 +47,7 @@ const TrendsSideBar = ({currentUser}:trendsSideBarProps) => {
        {hashtagList.map(({hashtag, count}) => {
         const title = hashtag.split('#')[1];
         return (
-          <Link href={`/hashtaga/${title}`} key={title} className='block'>
+          <Link href={`/hashtags/${title}`} key={title} className='block'>
             <p className='line-clamp-1 break-all font-semibold hover:underline text-base lg:text-lg' title={hashtag}>
               {hashtag}
             </p>

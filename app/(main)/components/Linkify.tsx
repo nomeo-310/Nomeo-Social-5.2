@@ -29,7 +29,7 @@ const Linkify = ({children}: linkfyProps) => {
     return (
       <LinkIt 
       regex={hashtagRegex} 
-      component={(match, key) => (<Link key={key} href={`/hashtag/${match.slice(1)}`} 
+      component={(match, key) => (<Link key={key} href={`/hashtags/${match.slice(1)}`} 
       className='text-primary hover:underline'>
         {match}
       </Link>

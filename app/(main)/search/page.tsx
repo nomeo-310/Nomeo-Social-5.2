@@ -2,6 +2,7 @@ import { getCurrentUser } from '@/lib/authAction';
 import { Metadata } from 'next'
 import React from 'react'
 import TrendsSideBar from '../components/TrendsSideBar';
+import SearchClient from './components/SearchClient';
 
 
 export const generateMetadata = ({searchParams: {query}}: searchPageProps):Metadata => {
@@ -21,8 +22,9 @@ const Page = async ({searchParams: {query}}: searchPageProps) => {
     <main className="flex w-full min-w-0 gap-4">
       <div className="w-full min-w-0 space-y-4">
         <div className="rounded-md bg-card p-4 shadow-sm">
-          <h2 className="font-bold text-2xl text-center">Search results for &quot;${query}&quot;</h2>
+          <h2 className="font-bold text-2xl text-center">Search results for &quot;{query}&quot;</h2>
         </div>
+        <SearchClient currentUser={currentUser} query={query}/>
       </div>
       <TrendsSideBar currentUser={currentUser}/>
     </main>

@@ -47,6 +47,7 @@ const PostEditor = ({currentUser} :postEditorProps) => {
   const { startUpload, attachments, isUploading, uploadProgress, removeAttachment, reset: resetMediaUploads } = useMediaUploads();
 
   const editor = useEditor({
+    immediatelyRender: false,
     extensions: [
       starterKit.configure({
         bold: false, 
