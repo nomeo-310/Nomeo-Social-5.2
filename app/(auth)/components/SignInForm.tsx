@@ -36,7 +36,6 @@ const SignInForm = () => {
       .then((callback) => {
         if (callback?.ok) {
           toast.success("Succesfully Logged In");
-          router.refresh();
           router.push("/");
         }
 
