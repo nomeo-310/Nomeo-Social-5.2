@@ -12,7 +12,7 @@ type deletePostDialogProps = {
 }
 
 const DeleteCommentDialog = ({comment, open, onClose}: deletePostDialogProps) => {
-  const mutation = useDeleteCommentMutation(comment._id);
+  const mutation = useDeleteCommentMutation();
 
   const handleOpenChange = (open: boolean) => {
     if (!open || !mutation.isPending) {
