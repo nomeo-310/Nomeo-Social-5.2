@@ -37,9 +37,9 @@ const PostCard = ({post, index, currentUser}: postCardProps) => {
 
   const ImageGrid = ({attachments}:{attachments: imageItem[]}) => {
     return (
-      <div className={cn('w-full h-auto', attachments.length > 1 && 'sm:columns-2 sm:space-y-4 sm:mx-auto sm:gap-3')}>
+      <div className={cn('w-full h-auto ', attachments.length > 1 && 'w-full h-auto columns-2 space-y-3 mx-auto gap-3')}>
         {attachments.map(attachment => (
-          <div className='relative mx-auto flex items-center justify-center' key={attachment._id}>
+          <div className='relative rounded-md overflow-hidden' key={attachment._id}>
             { attachment.type === 'video' ? 
               ( <video controls className='size-fit max-h-[30rem] rounded-md'>
                   <source src={attachment.url} type={attachment.type}/>
