@@ -19,7 +19,7 @@ export const POST = async (request:Request) => {
       return Response.json({error: 'Unathourized'}, {status: 401})
     }
 
-    const posts = await Post.find({hidePost: false, isBarred: false})
+    const posts = await Post.find()
     .populate('author', '_id username displayName image followers following city state')
     .populate('attachments', '_id url type')
     .sort({createdAt: 'descending'})
