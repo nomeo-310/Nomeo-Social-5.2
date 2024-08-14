@@ -108,7 +108,7 @@ const PostEditor = ({currentUser} :postEditorProps) => {
     const src = URL.createObjectURL(file);
 
     return (
-      <div className={cn('relative mx-auto size-fit', isUploading && 'opacity-50')}>
+      <div className={cn('relative rounded-md overflow-hidden', isUploading && 'opacity-50')}>
         {file.type.startsWith('image') ? (
           <Image src={src} alt='attachment_preview' width={500} height={500} className='size-fit max-h-[30rem] rounded-md'/>
         ) : (<video controls className='size-fit max-h-[30rem] rounded-md'>
