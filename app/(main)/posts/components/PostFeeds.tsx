@@ -23,7 +23,6 @@ const PostFeeds = ({ currentUser }:postFeedProps) => {
   const fetchApiData = async ({ pageParam }: { pageParam: number }) => {
     const response = await fetch('/api/getFeeds', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', },
       body: JSON.stringify({ page: pageParam })
     });
     
