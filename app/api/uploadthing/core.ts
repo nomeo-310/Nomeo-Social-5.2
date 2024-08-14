@@ -1,70 +1,73 @@
-import { getCurrentUser } from '@/lib/authAction';
-import { connectToMongoDB } from '@/lib/connectToMongoDb';
-import Media from '@/models/media';
-import User from '@/models/users';
-import { createUploadthing, FileRouter } from 'uploadthing/next'
-import { UploadThingError, UTApi } from 'uploadthing/server';
+import { getCurrentUser } from "@/lib/authAction";
+import { connectToMongoDB } from "@/lib/connectToMongoDb";
+import Media from "@/models/media";
+import User from "@/models/users";
+import { createUploadthing, FileRouter } from "uploadthing/next";
+import { UploadThingError, UTApi } from "uploadthing/server";
 
 const f = createUploadthing();
 
 export const fileRouter = {
   image: f({
-    image: {maxFileSize: '1024KB'}
+    image: { maxFileSize: "1024KB" },
   })
-  .middleware(async () => {
-    const currentUser = await getCurrentUser();
-    await connectToMongoDB();
+    .middleware(async () => {
+      const currentUser = await getCurrentUser();
+      await connectToMongoDB();
 
-    if (!currentUser) throw new UploadThingError('Unauthorized');
+      if (!currentUser) throw new UploadThingError("Unauthorized");
 
-    return { currentUser };
-  })
-  .onUploadComplete(async ({metadata, file}) => {
-    const oldImage = metadata.currentUser.image;
+      return { currentUser };
+    })
+    .onUploadComplete(async ({ metadata, file }) => {
+      const oldImage = metadata.currentUser?.image;
 
-    if (oldImage) {
-      const key = oldImage.split(`/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)[1]
-      await new UTApi().deleteFiles(key)
-    }
-    const newImageUrl = file.url.replace(
-      "/f/",
-      `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
-    );
+      if (oldImage) {
+        const key = oldImage.split(
+          `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
+        )[1];
+        await new UTApi().deleteFiles(key);
+      }
+      const newImageUrl = file.url.replace(
+        "/f/",
+        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
+      );
 
-    const updateData = {image: newImageUrl};
+      const updateData = { image: newImageUrl };
 
-    await User.findOneAndUpdate({_id: metadata.currentUser._id}, updateData)
+      await User.findOneAndUpdate(
+        { _id: metadata.currentUser._id },
+        updateData
+      );
 
-    return {image: newImageUrl}
-  }),
+      return { image: newImageUrl };
+    }),
   attachments: f({
     image: { maxFileSize: "8MB", maxFileCount: 5 },
-    video: { maxFileSize:"64MB", maxFileCount: 5 }
+    video: { maxFileSize: "64MB", maxFileCount: 5 },
   })
-  .middleware(async () => {
-    const currentUser = await getCurrentUser();
+    .middleware(async () => {
+      const currentUser = await getCurrentUser();
 
-    if (!currentUser) throw new UploadThingError('Unauthorized');
+      if (!currentUser) throw new UploadThingError("Unauthorized");
 
-    return { };
-  })
-  .onUploadComplete(async ({file}) => {
+      return {};
+    })
+    .onUploadComplete(async ({ file }) => {
+      const url = file.url.replace(
+        "/f/",
+        `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
+      );
 
-    const url = file.url.replace(
-      "/f/",
-      `/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`
-    );
-    
-    const type = file.type.startsWith('image') ? 'image' : 'video';
+      const type = file.type.startsWith("image") ? "image" : "video";
 
-    const mediaData = { url: url, type: type }
+      const mediaData = { url: url, type: type };
 
-    const media = await Media.create(mediaData)
-    media.save();
+      const media = await Media.create(mediaData);
+      media.save();
 
-    return { attachmentId: JSON.parse(JSON.stringify(media._id)) }
-  }),
-  
-} satisfies FileRouter
+      return { attachmentId: JSON.parse(JSON.stringify(media._id)) };
+    }),
+} satisfies FileRouter;
 
 export type AppFileRouter = typeof fileRouter;
