@@ -14,14 +14,14 @@ const Comment = ({ comment, currentUser }: singleCommentProps) => {
   return (
     <div className="flex gap-3 py-3 relative">
       <span className="hidden sm:inline">
-        <Link href={`/users/${comment.author.username}`}>
+        <Link href={`/users/${comment.author?.username}`}>
           <ImageAvatar imgSrc={comment.author?.image} />
         </Link>
       </span>
       <div>
         <div className="flex items-center gap-1 text-sm">
           <Link
-            href={`/users/${comment.author.username}`}
+            href={`/users/${comment.author?.username}`}
             className="font-medium hover:text-underline"
           >
             {comment.author.displayName}

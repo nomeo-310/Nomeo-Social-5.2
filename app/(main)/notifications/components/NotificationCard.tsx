@@ -51,7 +51,7 @@ const NotificationCard = ({
     "user-followed": {
       message: `${notification.issuer.displayName} started following you.`,
       icon: <HiOutlineUser className="size-7 text-primary" />,
-      href: `/users/${notification.issuer.username}`,
+      href: `/users/${notification.issuer?.username}`,
     },
   };
 

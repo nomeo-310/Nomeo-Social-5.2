@@ -75,7 +75,7 @@ const Page = async ({ params: { username } }: profilePageProps) => {
                 {user.displayName}
               </h2>
               <p className="text-muted-foreground text-base lg:text-lg">
-                @{user.username}
+                @{user?.username}
               </p>
             </div>
             <h2 className="text-base lg:text-lg">

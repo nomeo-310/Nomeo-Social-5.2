@@ -53,10 +53,10 @@ const UserButton = ({ className, currentUser }: Props) => {
       </DropdownMenuTrigger>
       <DropdownMenuContent className="cursor-pointer">
         <DropdownMenuLabel>
-          <p className="lg:text-lg text-base">@{currentUser.username}</p>
+          <p className="lg:text-lg text-base">@{currentUser?.username}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href={`/users/${currentUser.username}`}>
+        <Link href={`/users/${currentUser?.username}`}>
           <DropdownMenuItem>
             <HiOutlineUser size={20} className="mr-2" />
             <p className="text-base">Profile</p>
