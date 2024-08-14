@@ -6,8 +6,9 @@ import Post from "@/models/posts";
 import User from "@/models/users";
 
 export const GET = async (request:Request) => {
-  await connectToMongoDB();
   const { postId } = await request.json();
+  
+  await connectToMongoDB();
 
   try {
     const currentUser = await getCurrentUserRawData();
@@ -80,8 +81,6 @@ export const POST = async (request:Request) => {
 
       await User.findOneAndUpdate({_id: post.author}, {$push: {notifications: notification._id}})
     }
-
-
 
     return Response.json({success: 'You liked this post'}, {status: 200})
   } catch (error) {

@@ -22,7 +22,11 @@ type postFeedProps = {
 const SearchClient = ({query, currentUser}:postFeedProps) => {
 
   const fetchApiData = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/search?page=${pageParam}&query=${query}`);
+    const response = await fetch('/api/search', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ page: pageParam, query: query })
+    });
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');

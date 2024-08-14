@@ -21,7 +21,11 @@ type postFeedProps = {
 const UserFeeds = ({currentUser}:postFeedProps) => {
 
   const fetchApiData = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/getUserPosts/${currentUser._id}?page=${pageParam}`);
+    const response = await fetch('/api/getUserPosts', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', },
+      body: JSON.stringify({ page: pageParam, userId: currentUser._id })
+    });
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');

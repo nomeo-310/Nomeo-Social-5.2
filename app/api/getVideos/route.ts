@@ -3,12 +3,14 @@ import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { getCurrentUser } from "@/lib/authAction";
 import Media from "@/models/media";
 
-export const GET = async (request: NextRequest) => {
+export const POST = async (request:Request) => {
+  const { page } = await request.json();
+
   await connectToMongoDB();
 
   try {
-    const value = request.nextUrl.searchParams.get('page') || undefined;
-    const page = parseInt(value as string);
+    const value = page || undefined;
+    const pageNumber = parseInt(value as string);
     const pageSize = 6;
 
     const currentUser = await getCurrentUser();
@@ -20,10 +22,10 @@ export const GET = async (request: NextRequest) => {
     const media = await Media.find({author: currentUser._id, type: 'video'})
     .populate('post', '_id content createdAt')
     .sort({createdAt: 'descending'})
-    .skip((page - 1) * pageSize)
+    .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);
 
-    const nextPage = media.length > pageSize ? page + 1 : undefined;
+    const nextPage = media.length > pageSize ? pageNumber + 1 : undefined;
 
     const data = {
       videos: media.slice(0, pageSize),

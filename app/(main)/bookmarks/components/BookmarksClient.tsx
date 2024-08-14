@@ -21,7 +21,11 @@ type postFeedProps = {
 const BookmarksClient = ({currentUser}:postFeedProps) => {
 
   const fetchApiData = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/getBookmarkFeeds?page=${pageParam}`);
+    const response = await fetch('/api/getBookmarkFeeds', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({page: pageParam})
+    });
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');

@@ -18,10 +18,14 @@ type postFeedProps = {
 }
 
 
-const PostFeeds = ({currentUser}:postFeedProps) => {
+const PostFeeds = ({ currentUser }:postFeedProps) => {
 
-  const fetchApiData = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/getFeeds?page=${pageParam}`);
+  const fetchApiData = async ({ pageParam }: { pageParam: number }) => {
+    const response = await fetch('/api/getFeeds', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', },
+      body: JSON.stringify({ page: pageParam })
+    });
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');
@@ -31,7 +35,7 @@ const PostFeeds = ({currentUser}:postFeedProps) => {
     return data
   };
 
-  const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status} = useInfiniteQuery({
+  const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
     queryKey: ['post-feed', 'all-posts'],
     queryFn: fetchApiData,
     initialPageParam: 1,

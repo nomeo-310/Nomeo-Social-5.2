@@ -3,12 +3,14 @@ import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { getCurrentUser } from "@/lib/authAction";
 import Notifications from "@/models/notifications";
 
-export const GET = async (request: NextRequest) => {
+export const POST = async (request:Request) => {
+  const { page } = await request.json();
+  
   await connectToMongoDB();
 
   try {
-    const value = request.nextUrl.searchParams.get('page') || undefined;
-    const page = parseInt(value as string);
+    const value = page || undefined;
+    const pageNumber = parseInt(value as string);
     const pageSize = 10;
 
     const currentUser = await getCurrentUser();
@@ -21,10 +23,10 @@ export const GET = async (request: NextRequest) => {
     .populate('issuer', 'displayName username image')
     .populate('post', '_id content')
     .sort({createdAt: 'descending'})
-    .skip((page - 1) * pageSize)
+    .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);
 
-    const nextPage = notifications.length > pageSize ? page + 1 : undefined;
+    const nextPage = notifications.length > pageSize ? pageNumber + 1 : undefined;
 
     const data = {
       notifications: notifications.slice(0, pageSize),

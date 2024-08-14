@@ -20,9 +20,7 @@ const LikeButton = ({postId, initialState}: likeButtonProps) => {
     try {
       const response = await fetch('/api/likePost', {
         method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers: { 'Content-Type': 'application/json',},
         body: JSON.stringify({ postId: postId})
       });
 

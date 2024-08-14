@@ -16,7 +16,11 @@ type notificationClientProps = {
 const NotificationsClient = ({currentUser}: notificationClientProps) => {
 
   const getNotifications = async ({pageParam}: {pageParam: number}) => {
-    const response = await fetch(`/api/getNotifications?page=${pageParam}`);
+    const response = await fetch('/api/getNotifications', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({page: pageParam})
+    });
     
     if (!response.ok) {
       throw new Error('Something went wrong, try again later');
@@ -30,9 +34,7 @@ const NotificationsClient = ({currentUser}: notificationClientProps) => {
     try {
       const response = await fetch('/api/getNotifications/mark-as-read', {
         method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json'
-        },
+        headers: {'Content-Type': 'application/json'},
       });
 
       if (!response.ok) {
