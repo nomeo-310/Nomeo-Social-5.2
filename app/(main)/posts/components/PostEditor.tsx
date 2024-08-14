@@ -126,7 +126,7 @@ const PostEditor = ({currentUser} :postEditorProps) => {
   const AttachmentPreviews = ({attachments, removeAttachment}:attachmentPreviewsProps) => {
 
     return (
-      <div className={cn('w-full h-auto', attachments.length > 1 && 'sm:columns-2 sm:space-y-4 sm:mx-auto sm:gap-3')}>
+      <div className={cn('w-full h-auto', attachments.length > 1 && 'columns-2 space-y-4 mx-auto gap-3')}>
         {attachments.map(attachment => (
           <AttachmentPreview attachment={attachment} onRemoveClick={() => removeAttachment(attachment.file.name)} key={attachment.file.name} />
         ))}
