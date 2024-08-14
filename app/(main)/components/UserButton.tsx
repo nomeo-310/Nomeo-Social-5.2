@@ -24,6 +24,7 @@ const UserButton = ({className, currentUser}: Props) => {
 
   const logOut = () => {
     signOut();
+    queryClient.clear();
   }
 
   return (
