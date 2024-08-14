@@ -1,7 +1,7 @@
 import React from 'react'
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { HiOutlineBookmark, HiOutlineEnvelope, HiOutlineFilm, HiOutlineHome, HiOutlinePhoto } from 'react-icons/hi2';
+import { HiOutlineBookmark, HiOutlineEnvelope, HiOutlineFilm, HiOutlineFire, HiOutlineHome, HiOutlinePhoto } from 'react-icons/hi2';
 import { IconType } from 'react-icons/lib';
 import NotificationButton from '../notifications/components/NotificationButton';
 import { getCurrentUser } from '@/lib/authAction';
@@ -92,6 +92,15 @@ const MenuBar = async ({className}: menuBarProps) => {
         path={menuList[3].path} 
         icon={menuList[3].icon}        
       />
+      <Button
+      variant='ghost'
+      className='flex items-center justify-start gap-3 sm:hidden'
+      title={'Trending Stuffs'}
+      asChild >
+      <Link href={'/trending-stuffs'}>
+        <HiOutlineFire size={22} />
+      </Link>
+    </Button>
     </div>
   )
 }

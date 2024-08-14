@@ -35,7 +35,7 @@ const PostFeeds = ({ currentUser }:postFeedProps) => {
     return data
   };
 
-  const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status } = useInfiniteQuery({
+  const {data, fetchNextPage, hasNextPage, isFetching, isFetchingNextPage, status, error } = useInfiniteQuery({
     queryKey: ['post-feed', 'all-posts'],
     queryFn: fetchApiData,
     initialPageParam: 1,
@@ -59,7 +59,7 @@ const PostFeeds = ({ currentUser }:postFeedProps) => {
   if (status === 'error') {
     return (
       <p className='text-base lg:text-lg text-center text-destructive'>
-        An error occur while loading posts
+        An error occur while loading posts + {error.message}
       </p>
     )
   }

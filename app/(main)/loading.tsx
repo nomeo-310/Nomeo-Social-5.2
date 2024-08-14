@@ -3,7 +3,7 @@ import React from 'react'
 
 const Loading = () => {
   return (
-    <Loader2 className='mx-auto my-3 animate-spin'/>
+    <Loader2 className='mx-auto my-3 animate-spin w-full'/>
   )
 }
 
