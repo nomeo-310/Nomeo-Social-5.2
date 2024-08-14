@@ -23,11 +23,12 @@ const PostFeeds = ({ currentUser }:postFeedProps) => {
   const fetchApiData = async ({ pageParam }: { pageParam: number }) => {
     const response = await fetch('/api/getFeeds', {
       method: 'POST',
-      body: JSON.stringify({ page: pageParam })
+      body: JSON.stringify({ page: pageParam }),
+      headers: { 'Content-Type': 'application/json', },
     });
     
     if (!response.ok) {
-      throw new Error('Something went wrong, try again later');
+      throw new Error(`Something went wrong, try again later ${response.status}`);
     }
 
     const data = await response.json();
