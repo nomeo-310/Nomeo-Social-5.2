@@ -90,15 +90,15 @@ const PostCard = ({ post, index, currentUser }: postCardProps) => {
       <article className="space-y-3 rounded-md bg-card p-4 shadow-sm">
         <div className="flex justify-between gap-3">
           <div className="flex flex-wrap gap-3">
-            <Link href={`/users/${post.author?.username}`}>
+            <Link href={`/users/${post.author.username}`}>
               <ImageAvatar
-                imgSrc={post.author?.image}
+                imgSrc={post.author.image}
                 className="flex-none border"
               />
             </Link>
             <div>
               <Link
-                href={`/users/${post.author?.username}`}
+                href={`/users/${post.author.username}`}
                 className="block font-medium hover:underline text-base"
               >
                 {post.author.displayName}

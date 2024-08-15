@@ -188,7 +188,7 @@ const PostEditor = ({ currentUser }: postEditorProps) => {
     <div className="flex flex-col rounded-md bg-card p-4 shadow-sm gap-5">
       <div className="flex gap-5 ">
         <ImageAvatar
-          imgSrc={currentUser?.image}
+          imgSrc={currentUser.image}
           className="hidden sm:inline border flex-none"
         />
         <EditorContent

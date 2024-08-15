@@ -87,16 +87,16 @@ const UserInfoSideBar = async ({ userInfo }: userInfoSidebarProps) => {
     <div className="space-y-4 rounded-md bg-card p-4 shadow-sm">
       <div className="font-bold text-2xl">About this user</div>
       <Link
-        href={`/users/${userInfo?.username}`}
+        href={`/users/${userInfo.username}`}
         className="flex items-center gap-3"
       >
-        <ImageAvatar imgSrc={userInfo?.image} className="flex-none border" />
+        <ImageAvatar imgSrc={userInfo.image} className="flex-none border" />
         <div className="text-base">
           <p className="line-clamp-1 break-all font-semibold hover:underline">
             {userInfo.displayName}
           </p>
           <p className="line-clamp-1 break-all text-muted-foreground">
-            @{userInfo?.username}
+            @{userInfo.username}
           </p>
         </div>
       </Link>

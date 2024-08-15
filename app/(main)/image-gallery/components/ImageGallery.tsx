@@ -43,7 +43,7 @@ const ImageGallery = () => {
     getNextPageParam: (lastPage) => lastPage.nextPage,
   });
 
-  const images = data?.pages.flatMap((page) => page?.images) || [];
+  const images = data?.pages.flatMap((page) => page.images) || [];
 
   if (status === "pending") {
     return <MediaLoadingSkeleton />;

@@ -30,7 +30,7 @@ export const useUpdateUserMutation = () => {
       ]);
     },
     onSuccess: async ([updateData, uploadResult]) => {
-      const newImageUrl = uploadResult?.[0].serverData?.image;
+      const newImageUrl = uploadResult?.[0].serverData.image;
 
       const queryFilter: QueryFilters = {
         queryKey: ["post-feed"],
@@ -53,7 +53,7 @@ export const useUpdateUserMutation = () => {
                     ...post,
                     author: {
                       ...updateData,
-                      image: newImageUrl || updateData?.image,
+                      image: newImageUrl || updateData.image,
                     },
                   };
                 }

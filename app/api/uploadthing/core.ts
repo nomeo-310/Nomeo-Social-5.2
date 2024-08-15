@@ -20,7 +20,7 @@ export const fileRouter = {
       return { currentUser };
     })
     .onUploadComplete(async ({ metadata, file }) => {
-      const oldImage = metadata.currentUser?.image;
+      const oldImage = metadata.currentUser.image;
 
       if (oldImage) {
         const key = oldImage.split(

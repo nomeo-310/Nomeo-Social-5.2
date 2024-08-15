@@ -44,7 +44,7 @@ export const useDeletePostMutation = () => {
       });
 
       if (pathname === `/posts/${postReturned._id}`) {
-        router.push(`/users/${postReturned.author?.username}`);
+        router.push(`/users/${postReturned.author.username}`);
       }
     },
     onError(error) {

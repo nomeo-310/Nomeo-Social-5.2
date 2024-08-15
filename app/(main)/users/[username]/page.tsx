@@ -65,7 +65,7 @@ const Page = async ({ params: { username } }: profilePageProps) => {
     return (
       <div className="w-full h-fit space-y-4 rounded-md bg-card p-4 shadow-sm">
         <ImageAvatar
-          imgSrc={user?.image}
+          imgSrc={user.image}
           className="size-36 md:size-44 xl:size-56 mx-auto max-w-60"
         />
         <div className="flex flex-wrap gap-3 sm:flex-nowrap">
@@ -75,7 +75,7 @@ const Page = async ({ params: { username } }: profilePageProps) => {
                 {user.displayName}
               </h2>
               <p className="text-muted-foreground text-base lg:text-lg">
-                @{user?.username}
+                @{user.username}
               </p>
             </div>
             <h2 className="text-base lg:text-lg">

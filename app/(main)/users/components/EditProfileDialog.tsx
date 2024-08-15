@@ -145,7 +145,7 @@ const EditProfileDialog = ({
             src={
               imageCropped
                 ? URL.createObjectURL(imageCropped)
-                : user?.image || placeholder
+                : user.image || placeholder
             }
             onImageCropped={setImageCropped}
           />

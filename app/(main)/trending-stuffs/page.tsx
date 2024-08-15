@@ -24,11 +24,11 @@ const page = async () => {
             className="flex items-center justify-between gap-3"
           >
             <Link
-              href={`/users/${suggestion?.username}`}
+              href={`/users/${suggestion.username}`}
               className="flex items-center gap-3"
             >
               <ImageAvatar
-                imgSrc={suggestion?.image}
+                imgSrc={suggestion.image}
                 className="flex-none border"
               />
               <div className="text-base">
@@ -36,7 +36,7 @@ const page = async () => {
                   {suggestion.displayName}
                 </p>
                 <p className="line-clamp-1 break-all text-muted-foreground">
-                  @{suggestion?.username}
+                  @{suggestion.username}
                 </p>
               </div>
             </Link>
