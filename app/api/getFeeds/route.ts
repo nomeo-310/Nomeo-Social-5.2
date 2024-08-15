@@ -1,13 +1,16 @@
 import { getCurrentUser } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
+import Attachment from "@/models/attachments";
 import Post from "@/models/posts";
+import User from "@/models/users";
 
 export const POST = async (request:Request) => {
   const { page } = await request.json();
 
-  await connectToMongoDB();
-
+  
   try {
+    await connectToMongoDB();
+
     const value = page || undefined;
     const pageNumber = parseInt(value as string);
     const pageSize = 10;
@@ -20,7 +23,16 @@ export const POST = async (request:Request) => {
     }
 
     const posts = await Post.find({hidePost: false, isBarred: false})
-    .populate('author', '_id username displayName image followers following city state')
+    .populate({
+      path: 'author',
+      model: User,
+      select: '_id username displayName image followers following city state'
+    })
+    .populate({
+      path: 'attachments',
+      model: Attachment,
+      select: '_id url type'
+    })
     .sort({createdAt: 'descending'})
     .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);
