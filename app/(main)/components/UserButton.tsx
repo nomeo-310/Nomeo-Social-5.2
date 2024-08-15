@@ -48,15 +48,15 @@ const UserButton = ({ className, currentUser }: Props) => {
     <DropdownMenu>
       <DropdownMenuTrigger asChild className="focus:outline-none">
         <button type="button" className={cn("flex-none", className)}>
-          <ImageAvatar imgSrc={currentUser.image} />
+          <ImageAvatar imgSrc={currentUser?.image} />
         </button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="cursor-pointer">
         <DropdownMenuLabel>
-          <p className="lg:text-lg text-base">@{currentUser.username}</p>
+          <p className="lg:text-lg text-base">@{currentUser?.username}</p>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <Link href={`/users/${currentUser.username}`}>
+        <Link href={`/users/${currentUser?.username}`}>
           <DropdownMenuItem>
             <HiOutlineUser size={20} className="mr-2" />
             <p className="text-base">Profile</p>
