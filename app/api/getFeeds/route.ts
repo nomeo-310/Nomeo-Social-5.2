@@ -21,7 +21,6 @@ export const POST = async (request:Request) => {
 
     const posts = await Post.find({hidePost: false, isBarred: false})
     .populate('author', '_id username displayName image followers following city state')
-    .populate('attachments', '_id url type')
     .sort({createdAt: 'descending'})
     .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);
