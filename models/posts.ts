@@ -4,10 +4,10 @@ import {  Schema } from 'mongoose';
 
 const PostSchema:Schema = new Schema({
   content: { type: String, default: '' },
-  attachments: [{ type: Schema.ObjectId, ref: 'Attachment'}],
   author: { type: Schema.ObjectId, ref: 'User'},
   likes: [{ type: Schema.ObjectId, ref: 'User'}],
   bookmarks: [{ type: Schema.ObjectId, ref: 'User'}],
+  attachments: [{ type: Schema.ObjectId, ref: 'Attachment'}],
   hideNotification: { type: Boolean, default: false },
   isBarred: { type: Boolean, default: false },
   hidePost: { type: Boolean, default: false },
