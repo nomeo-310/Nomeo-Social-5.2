@@ -1,5 +1,5 @@
 import { connectToMongoDB } from "@/lib/connectToMongoDb"
-import Media from "@/models/media";
+import Attachment from "@/models/attachments";
 import { UTApi } from "uploadthing/server";
 
 export const GET = async (request:Request) => {
@@ -22,7 +22,7 @@ export const GET = async (request:Request) => {
       searchQuery = {post: undefined || null}
     }
 
-    const unusedMedia = await Media.find(searchQuery)
+    const unusedMedia = await Attachment.find(searchQuery)
     .select('_id url')
 
     const returnedUnuseMedia = JSON.parse(JSON.stringify(unusedMedia));
@@ -31,7 +31,7 @@ export const GET = async (request:Request) => {
       returnedUnuseMedia.map((m: { url: string; }) => m.url.split(`/a/${process.env.NEXT_PUBLIC_UPLOADTHING_APP_ID}/`)[1])
     );
 
-    await Media.deleteMany({_id: {$in: returnedUnuseMedia.map((m: {_id: string}) => m._id)}})
+    await Attachment.deleteMany({_id: {$in: returnedUnuseMedia.map((m: {_id: string}) => m._id)}})
 
     return new Response();
     
