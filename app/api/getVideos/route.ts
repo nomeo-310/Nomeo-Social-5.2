@@ -1,7 +1,6 @@
-import { NextRequest } from "next/server";
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { getCurrentUser } from "@/lib/authAction";
-import Media from "@/models/media";
+import Attachment from "@/models/attachments";
 
 export const POST = async (request:Request) => {
   const { page } = await request.json();
@@ -19,7 +18,7 @@ export const POST = async (request:Request) => {
       return Response.json({error: 'Unathourized'}, {status: 401})
     };
 
-    const media = await Media.find({author: currentUser._id, type: 'video'})
+    const media = await Attachment.find({author: currentUser._id, type: 'video'})
     .populate('post', '_id content createdAt')
     .sort({createdAt: 'descending'})
     .skip((pageNumber - 1) * pageSize)

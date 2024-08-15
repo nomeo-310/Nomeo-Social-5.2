@@ -3,7 +3,7 @@
 import { getCurrentUserRawData } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { createPostSchema } from "@/lib/validation";
-import Media from "@/models/media";
+import Attachment from "@/models/attachments";
 import Notifications from "@/models/notifications";
 import Post from "@/models/posts";
 import User from "@/models/users";
@@ -26,7 +26,7 @@ export const createNewPost = async (input: {content: string, attachmentIds: stri
 
     await User.findOneAndUpdate({_id: currentUser._id}, {$push: {posts: post._id}})
 
-    await Media.updateMany({_id: {$in: attachmentIds}}, {post: post._id, author: currentUser._id})
+    await Attachment.updateMany({_id: {$in: attachmentIds}}, {post: post._id, author: currentUser._id})
 
     const newPostValue =  await Post.findOne({_id: post._id})
     .populate('author', '_id username displayName image followers following')
@@ -70,7 +70,7 @@ export const deletePost = async (id: string) => {
 
   if (JSON.stringify(post.author) !== JSON.stringify(currentUser._id)) throw Error('Unathourized');
 
-  await Media.updateMany({_id: {$in: post.attachments}}, { $unset: { post: "", author: "" }})
+  await Attachment.updateMany({_id: {$in: post.attachments}}, { $unset: { post: "", author: "" }})
 
   await Notifications.deleteMany({post: id})
 

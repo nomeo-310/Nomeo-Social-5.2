@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import {  Schema } from 'mongoose';
 
 
-const MediaSchema:Schema = new Schema({
+const AttachmentSchema:Schema = new Schema({
   author: { type: Schema.ObjectId, ref: 'User'},
   post: { type: Schema.ObjectId, ref: 'Post'},
   type: { type: String, enum: ['image', 'video']},
@@ -12,6 +12,6 @@ const MediaSchema:Schema = new Schema({
 
 (mongoose.models as any) = {};
 
-const Media = mongoose.model('Media', MediaSchema);
+const Attachment = mongoose.model('Attachment', AttachmentSchema);
 
-export default Media;
+export default Attachment;

@@ -1,6 +1,6 @@
 import { getCurrentUser } from "@/lib/authAction";
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
-import Media from "@/models/media";
+import Attachment from "@/models/attachments";
 import User from "@/models/users";
 import { createUploadthing, FileRouter } from "uploadthing/next";
 import { UploadThingError, UTApi } from "uploadthing/server";
@@ -63,7 +63,7 @@ export const fileRouter = {
 
       const mediaData = { url: url, type: type };
 
-      const media = await Media.create(mediaData);
+      const media = await Attachment.create(mediaData);
       media.save();
 
       return { attachmentId: JSON.parse(JSON.stringify(media._id)) };

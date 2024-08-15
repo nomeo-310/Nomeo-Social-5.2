@@ -59,7 +59,7 @@ const PostFeeds = ({ currentUser }:postFeedProps) => {
   if (status === 'error') {
     return (
       <p className='text-base lg:text-lg text-center text-destructive'>
-        An error occur while loading posts + {error.message}
+        An error occur while loading posts.
       </p>
     )
   }
