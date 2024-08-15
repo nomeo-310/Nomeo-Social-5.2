@@ -1,7 +1,9 @@
 import { getCurrentUser } from "@/lib/authAction"
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
+import Attachment from "@/models/attachments";
 import Bookmarks from "@/models/bookmarks";
 import Post from "@/models/posts";
+import User from "@/models/users";
 
 export const POST = async (request:Request) => {
   const { page } = await request.json()
@@ -26,8 +28,16 @@ export const POST = async (request:Request) => {
     const allBookmarkPostIds = JSON.parse(JSON.stringify(allBookmarks)).map((i: { post: string; }) => i.post)
 
     const bookmarks = await Post.find({_id: {$in: allBookmarkPostIds}})
-    .populate('author', '_id username displayName image followers following city state')
-    .populate('attachments', '_id url type')
+    .populate({
+      path: 'author',
+      model: User,
+      select: '_id username displayName image followers following city state'
+    })
+    .populate({
+      path: 'attachments',
+      model: Attachment,
+      select: '_id url type'
+    })
     .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);
 

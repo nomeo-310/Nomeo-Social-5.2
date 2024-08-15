@@ -2,6 +2,7 @@ import { getCurrentUserRawData } from "@/lib/authAction";
 import { connectToMongoDB } from "@/lib/connectToMongoDb"
 import Comments from "@/models/comments";
 import Post from "@/models/posts";
+import User from "@/models/users";
 import { NextRequest } from "next/server";
 
 export const GET = async (request:NextRequest, {params: { postId }}: {params: {postId: string}}) => {
@@ -24,7 +25,11 @@ export const GET = async (request:NextRequest, {params: { postId }}: {params: {p
     };
 
     const comments = await Comments.find({post: postId})
-    .populate('author', '_id username displayName image followers following city')
+    .populate({
+      path: 'author',
+      model: User,
+      select: '_id username displayName image followers following city state'
+    })
     .sort({createdAt: 'descending'})
     .skip((page - 1) * pageSize)
     .limit(pageSize + 1);

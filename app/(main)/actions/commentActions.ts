@@ -37,7 +37,11 @@ export const createComment = async ({postId, content}:createCommentProps) => {
   await Post.findOneAndUpdate({_id: post._id}, {$push: {comments: comment._id}})
 
   const createdComment = await Comments.findOne({_id: comment._id})
-  .populate('author', '_id username displayName image followers following city')
+  .populate({
+    path: 'author',
+    model: User,
+    select: '_id username displayName image followers following city'
+  })
 
   if (post.hideNotification === false && JSON.stringify(post.author) !== JSON.stringify(currentUser._id)) {
     const notificationData = {
@@ -64,7 +68,11 @@ export const getSingleComment = async (commentId:string) => {
   if (!currentUser) throw new Error('Unathourized')
   
   const comment = await Comments.findOne({_id: commentId})
-  .populate('author', '_id username displayName image followers following city')
+  .populate({
+    path: 'author',
+    model: User,
+    select: '_id username displayName image followers following city'
+  })
 
   if (!comment) throw new Error('Comment not found')
 

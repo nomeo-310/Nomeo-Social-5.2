@@ -1,6 +1,7 @@
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { getCurrentUser } from "@/lib/authAction";
 import Attachment from "@/models/attachments";
+import Post from "@/models/posts";
 
 export const POST = async (request:Request) => {
   const { page } = await request.json();
@@ -19,7 +20,11 @@ export const POST = async (request:Request) => {
     };
 
     const media = await Attachment.find({author: currentUser._id, type: 'video'})
-    .populate('post', '_id content createdAt')
+    .populate({
+      path: 'post',
+      model: Post,
+      select: '_id content createdAt'
+    })
     .sort({createdAt: 'descending'})
     .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);

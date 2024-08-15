@@ -29,8 +29,16 @@ export const createNewPost = async (input: {content: string, attachmentIds: stri
     await Attachment.updateMany({_id: {$in: attachmentIds}}, {post: post._id, author: currentUser._id})
 
     const newPostValue =  await Post.findOne({_id: post._id})
-    .populate('author', '_id username displayName image followers following')
-    .populate('attachments', '_id url type')
+    .populate({
+      path: 'author',
+      model: User,
+      select: '_id username displayName image followers following city state'
+    })
+    .populate({
+      path: 'attachments',
+      model: Attachment,
+      select: '_id url type'
+    })
 
     const newPost = JSON.parse(JSON.stringify(newPostValue));
 
@@ -47,8 +55,16 @@ export const getSinglePost = async (id: string) => {
   if (!currentUser) throw Error('Unathourized');
 
   const post = await Post.findOne({_id: id})
-  .populate('author', '_id username displayName image followers following bio city state country occupation')
-  .populate('attachments', '_id url type')
+  .populate({
+    path: 'author',
+    model: User,
+    select: '_id username displayName image followers following bio city state country occupation'
+  })
+  .populate({
+    path: 'attachments',
+    model: Attachment,
+    select: '_id url type'
+  })
 
   if (!post) throw Error('Post not found')
 

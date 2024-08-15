@@ -1,7 +1,8 @@
-import { NextRequest } from "next/server";
 import { connectToMongoDB } from "@/lib/connectToMongoDb";
 import { getCurrentUser } from "@/lib/authAction";
 import Notifications from "@/models/notifications";
+import User from "@/models/users";
+import Post from "@/models/posts";
 
 export const POST = async (request:Request) => {
   const { page } = await request.json();
@@ -20,8 +21,16 @@ export const POST = async (request:Request) => {
     };
 
     const notifications = await Notifications.find({recipient: currentUser._id})
-    .populate('issuer', 'displayName username image')
-    .populate('post', '_id content')
+    .populate({
+      path: 'issuer',
+      model: User,
+      select: 'displayName username image'
+    })
+    .populate({
+      path: 'post',
+      model: Post,
+      select: '_id content' 
+    })
     .sort({createdAt: 'descending'})
     .skip((pageNumber - 1) * pageSize)
     .limit(pageSize + 1);
