@@ -8,7 +8,6 @@ const UserSchema:Schema = new Schema({
   email: { type: String, require: true, unique:true },
   hashedPassword: { type: String, default: '' },
   image: { type:String, default: ''},
-  profileImage: { type: Object, default: { public_id: '', secure_url: '' }},
   occupation: { type: String, default: ''},
   bio: { type: String, default: ''},
   city: { type: String, default: ''},
@@ -22,6 +21,8 @@ const UserSchema:Schema = new Schema({
   comments: [{ type: Schema.ObjectId, ref: 'Comments'}],
   notifications: [{ type: Schema.ObjectId, ref: 'Notifications'}],
   bookmarks : [{ type: Schema.ObjectId, ref: 'Post'}],
+  interestSelected: { type: Boolean, default: false },
+  interests: { type: Schema.ObjectId, ref: 'Interest'},
 }, {timestamps: true});
 
 (mongoose.models as any) = {};

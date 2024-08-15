@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 const Page = () => {
   return (
-    <AuthLayout imageSrc='/images/bg_1.jpg'>
+    <AuthLayout desktopImageSrc='/images/bg_1a.jpg' mobileImageSrc='/images/bg_1b.jpg'>
       <div className="flex flex-col gap-4">
         <div className='mb-3'>
           <h2 className='font-bold text-3xl lg:text-4xl mb-3 text-center'>Sign In</h2>
