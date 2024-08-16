@@ -1,9 +1,3 @@
-
-type imageProps = {
-  public_id: string, 
-  secure_url: string
-};
-
 export type userProps = {
   _id: string
   name: string
@@ -17,7 +11,6 @@ export type userProps = {
   image: string
   website: string
   occupation: string
-  profileImage: imageProps
   country: string,
   posts: string[],
   followers: string[],
@@ -26,6 +19,8 @@ export type userProps = {
   comments: string[],
   notifications: string[],
   bookmarks : string[],
+  interestSelected: boolean,
+  interests: string,
   createdAt: string
   updatedAt: string
 };

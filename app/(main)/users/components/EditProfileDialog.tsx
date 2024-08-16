@@ -11,13 +11,7 @@ import { useForm } from "react-hook-form";
 import { updateProfileSchema, updateProfileValues } from "@/lib/validation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useUpdateUserMutation } from "../../hooks/updateUserMutation";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import LoadingButton from "@/components/common/LoadingButton";

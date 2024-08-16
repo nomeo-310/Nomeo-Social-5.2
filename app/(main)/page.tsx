@@ -4,6 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import PostEditor from "./posts/components/PostEditor";
 import PostFeeds from "./posts/components/PostFeeds";
 import FollowingFeeds from "./posts/components/FollowingFeeds";
+import SelectInterests from "./components/SelectInterests";
 
 export default async function Home () {
   const currentUser = await getCurrentUser();
@@ -26,6 +27,7 @@ export default async function Home () {
         </Tabs>
       </div>
       <TrendsSideBar currentUser={currentUser}/>
+      <SelectInterests currentUser={currentUser}/>
     </main>
   );
 }
